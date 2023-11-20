@@ -12,13 +12,13 @@ public class HabrParser implements Parser<ArrayList<Article>> {
     public ArrayList<Article> Parse(Document document) {
         ArrayList<Article> articles = new ArrayList<Article>();
 
-        Elements articleElements = document.select("div.post__body");
+        Elements articleElements = document.select("article");
 
         for (Element articleElement : articleElements) {
-            String title = articleElement.select("a.tm-title__link span").text();
-            String text = articleElement.select("div.post__text").text();
+            String title = articleElement.select("h2.tm-title a.tm-title__link").text();
+            String text = articleElement.select("div.article-formatted-body").text();
 
-            String imageUrl = articleElement.select("img.post__habracut-btn").attr("src");
+            String imageUrl = articleElement.select("div.article-formatted-body img").attr("src");
 
             Article article = new Article(title, text, imageUrl);
             articles.add(article);
