@@ -24,9 +24,9 @@ public class Article {
     }
     @Override
     public String toString(){
-
         return  "title=" + title + "\n" +
                 "text=" + text + "\n" +
-                "imageUrl=" + imageUrl + "\n";
+                "imageUrl=" + imageUrl + "\n" +
+                "\n";
     }
 }

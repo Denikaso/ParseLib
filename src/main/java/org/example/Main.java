@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
         ParserWorker<ArrayList<Article>>  parser = new ParserWorker<>(new HabrParser());
-        // задайте значения переменным start и end
         parser.setParserSettings(new HabrSettings(1, 2));
         parser.onCompletedList.add(new Completed());
         parser.onNewDataList.add(new NewData());
