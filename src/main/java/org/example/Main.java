@@ -2,7 +2,7 @@ package org.example;
 
 import habr.HabrParser;
 import habr.HabrSettings;
-import model.Article;
+import habr.model.Article;
 
 import java.io.IOException;
 import java.util.ArrayList;

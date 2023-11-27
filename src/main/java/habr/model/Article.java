@@ -1,4 +1,4 @@
-package model;
+package habr.model;
 
 public class Article {
     private String title;
@@ -21,5 +21,12 @@ public class Article {
 
     public String getTitle() {
         return title;
+    }
+    @Override
+    public String toString(){
+
+        return  "title=" + title + "\n" +
+                "text=" + text + "\n" +
+                "imageUrl=" + imageUrl + "\n";
     }
 }
