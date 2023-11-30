@@ -1,7 +1,7 @@
 package habr;
 
 import habr.model.Article;
-import org.example.Parser;
+import parser.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

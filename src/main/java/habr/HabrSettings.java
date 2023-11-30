@@ -1,6 +1,6 @@
 package habr;
 
-import org.example.ParserSettings;
+import parser.ParserSettings;
 
 public class HabrSettings extends ParserSettings {
     public HabrSettings(int start, int end) {

@@ -1,7 +1,7 @@
 package kirovdramteatr;
 
 import kirovdramteatr.model.Poster;
-import org.example.Parser;
+import parser.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

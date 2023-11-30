@@ -1,0 +1,8 @@
+
+g	java:S1128"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8ý£ÓŽÁ1
+{
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÍÎˆàÿÿÿÿÿ8ý£ÓŽÁ1
+W
+java:S1141/"5Extract this nested try block into a separate method.(ÔÅÅ’þÿÿÿÿ8óþÓŽÁ1
+H
+java:S1874."+Remove this use of "URL"; it is deprecated.(¸Šµô8¡¤ÓŽÁ1

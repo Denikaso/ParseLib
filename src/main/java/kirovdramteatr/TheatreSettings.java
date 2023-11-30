@@ -1,6 +1,6 @@
 package kirovdramteatr;
 
-import org.example.ParserSettings;
+import parser.ParserSettings;
 
 public class TheatreSettings extends ParserSettings {
     public TheatreSettings(int start, int end){
