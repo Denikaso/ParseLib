@@ -1,3 +1,5 @@
+package parser;
+
 import parser.ParserWorker;
 
 public class NewData<T> implements ParserWorker.OnNewDataHandler<T> {

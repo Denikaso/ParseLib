@@ -3,17 +3,18 @@ import habr.HabrSettings;
 import kirovdramteatr.TheatreParser;
 import kirovdramteatr.TheatreSettings;
 import parser.Completed;
+import parser.NewData;
 import parser.ParserWorker;
 import java.io.IOException;
 
 public class ParserLauncher {
-    private String siteUrl;
+    private final String siteUrl;
     private int startPage;
     private int endPage;
     public ParserLauncher(String siteUrl){
         this.siteUrl = siteUrl;
     }
-    public void launchSite() throws IOException {
+    public final void launchSite() throws IOException {
         ParserWorker<?> parser = null;
         if (isHabr()) {
             parser = new ParserWorker<>(new HabrParser());
@@ -36,13 +37,13 @@ public class ParserLauncher {
         parser.Abort();
     }
 
-    public void launchSiteWithoutPagination() throws IOException {
+    public final void launchSiteWithoutPagination() throws IOException {
         startPage = 1;
         endPage = 1;
         launchSite();
     }
 
-    public void launchSiteWithPagination(int startPage, int endPage) throws IOException {
+    public final void launchSiteWithPagination(int startPage, int endPage) throws IOException {
         this.startPage = startPage;
         this.endPage = endPage;
         launchSite();
