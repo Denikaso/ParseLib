@@ -7,8 +7,7 @@ import java.io.IOException;
 public class HtmlLoader {
     String url;
 
-    public HtmlLoader(ParserSettings settings)
-    {
+    public HtmlLoader(ParserSettings settings) {
         url = settings.BASE_URL+"/"+ settings.PREFIX;
     }
 
@@ -16,5 +15,4 @@ public class HtmlLoader {
         String currentUrl = url.replace("{CurrentId}", Integer.toString(id));
         return Jsoup.connect(currentUrl).get();
     }
-
 }

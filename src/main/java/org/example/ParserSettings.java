@@ -1,23 +1,12 @@
 package org.example;
 
+import lombok.Getter;
+
 public abstract class ParserSettings {
-    // Адрес сайта
     public static String BASE_URL;
-
-    // префикс страницы
     public static String PREFIX;
-
-    // начало пагинации
+    @Getter
     protected int startPoint;
-
-    // конец пагинации
+    @Getter
     protected int endPoint;
-
-    public int getStartPoint() {
-        return startPoint;
-    }
-
-    public int getEndPoint() {
-        return endPoint;
-    }
 }

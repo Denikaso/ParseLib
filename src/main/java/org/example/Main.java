@@ -1,12 +1,8 @@
 package org.example;
 
-import habr.HabrParser;
-import habr.HabrSettings;
-import habr.model.Article;
 import kirovdramteatr.TheatreParser;
 import kirovdramteatr.TheatreSettings;
 import kirovdramteatr.model.Poster;
-
 import java.io.IOException;
 import java.util.ArrayList;
 

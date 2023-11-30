@@ -1,12 +1,16 @@
 package org.example;
 
-import habr.HabrParser;
+import lombok.Getter;
+import lombok.Setter;
 import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class ParserWorker<T> {
+    @Setter
+    @Getter
     Parser<T> parser;
+    @Getter
     ParserSettings parserSettings;
     HtmlLoader loader;
     boolean isActive;
@@ -34,31 +38,20 @@ public class ParserWorker<T> {
         isActive = true;
         Worker();
     }
+
     public void Abort() {
         isActive = false;
     }
-
-    public void setParser(Parser<T> parser) {
-        this.parser = parser;
-    }
-
     public void setParserSettings(ParserSettings parserSettings) {
         this.parserSettings = parserSettings;
         loader = new HtmlLoader(parserSettings);
     }
 
-    public ParserSettings getParserSettings() {
-        return parserSettings;
-    }
-
-    public Parser<T> getParser() {
-        return parser;
-    }
     public interface OnNewDataHandler<T> {
         void OnNewData(Object sender, T e);
     }
+
     public interface OnCompleted {
         void OnCompleted(Object sender);
     }
-
 }
