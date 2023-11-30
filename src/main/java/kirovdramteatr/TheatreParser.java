@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class TheatreParser implements Parser<ArrayList<Poster>> {
     @Override
     public ArrayList<Poster> Parse(Document document) {
-        ArrayList<Poster> posters = new ArrayList<Poster>();
+        ArrayList<Poster> posters = new ArrayList<>();
         Elements postersElements = document.select("div.t_afisha");
         Path folderPath = Paths.get(System.getProperty("user.dir"), "images");
 
@@ -30,14 +30,37 @@ public class TheatreParser implements Parser<ArrayList<Poster>> {
         }
 
         for(Element poster : postersElements){
-            String duration = poster.select(".td3 .td2 .td1 div").first().textNodes().get(0).text();
-            Element td2Element = poster.select(".td2").first();
-            String imageUrl = td2Element.select("img").first().absUrl("src");
-            Element tInfoAfishaElement = poster.select(".t_info_afisha").first();
-            String date = tInfoAfishaElement.select(".td1 .date_afisha").text();
-            String title = tInfoAfishaElement.select("h3 a").textNodes().get(0).text();
-            String ageLimit = tInfoAfishaElement.select(".value_limit").text();
-            posters.add(new Poster(title, imageUrl, date, duration, ageLimit));
+            String duration = poster
+                    .select(".td3 .td2 .td1 div")
+                    .first()
+                    .textNodes()
+                    .get(0)
+                    .text();
+            Element td2Element = poster
+                    .select(".td2")
+                    .first();
+            String imageUrl = td2Element
+                    .select("img")
+                    .first()
+                    .absUrl("src");
+            Element tInfoAfishaElement = poster
+                    .select(".t_info_afisha")
+                    .first();
+            String date = tInfoAfishaElement
+                    .select(".td1 .date_afisha").text();
+            String title = tInfoAfishaElement.select("h3 a")
+                    .textNodes()
+                    .get(0)
+                    .text();
+            String ageLimit = tInfoAfishaElement.select(".value_limit")
+                    .text();
+            posters.add(Poster.builder()
+                    .title(title)
+                    .imageUrl(imageUrl)
+                    .date(date)
+                    .duration(duration)
+                    .ageLimit(ageLimit)
+                    .build());
 
             if(imageUrl.startsWith("https"))
             {
