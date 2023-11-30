@@ -1,5 +1,6 @@
 package habr;
 
+import lombok.val;
 import parser.ParserSettings;
 
 public class HabrSettings extends ParserSettings {

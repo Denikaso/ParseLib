@@ -1,10 +1,10 @@
 package kirovdramteatr;
 
 import kirovdramteatr.model.Poster;
+import lombok.val;
 import parser.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -17,42 +17,41 @@ import java.util.ArrayList;
 
 public class TheatreParser implements Parser<ArrayList<Poster>> {
     @Override
-    public ArrayList<Poster> Parse(Document document) {
+    public final ArrayList<Poster> Parse(Document document) {
         ArrayList<Poster> posters = new ArrayList<>();
-        Elements postersElements = document.select("div.t_afisha");
-        Path folderPath = Paths.get(System.getProperty("user.dir"), "images");
+        val postersElements = document.select("div.t_afisha");
+        val folderPath = Paths.get(System.getProperty("user.dir"), "images");
 
         try{
             Files.createDirectories(folderPath);
-        }
-        catch(Exception e){
+        } catch(Exception e){
             e.printStackTrace();
         }
 
         for(Element poster : postersElements){
-            String duration = poster
+            val duration = poster
                     .select(".td3 .td2 .td1 div")
                     .first()
                     .textNodes()
                     .get(0)
                     .text();
-            Element td2Element = poster
+            val td2Element = poster
                     .select(".td2")
                     .first();
-            String imageUrl = td2Element
+            val imageUrl = td2Element
                     .select("img")
                     .first()
                     .absUrl("src");
-            Element tInfoAfishaElement = poster
+            val tInfoAfishaElement = poster
                     .select(".t_info_afisha")
                     .first();
-            String date = tInfoAfishaElement
+            val date = tInfoAfishaElement
                     .select(".td1 .date_afisha").text();
-            String title = tInfoAfishaElement.select("h3 a")
+            val title = tInfoAfishaElement.select("h3 a")
                     .textNodes()
                     .get(0)
                     .text();
-            String ageLimit = tInfoAfishaElement.select(".value_limit")
+            val ageLimit = tInfoAfishaElement.select(".value_limit")
                     .text();
             posters.add(Poster.builder()
                     .title(title)
@@ -66,10 +65,9 @@ public class TheatreParser implements Parser<ArrayList<Poster>> {
             {
                 try
                 {
-                    URL url = new URL(imageUrl);
+                    val url = new URL(imageUrl);
                     try (InputStream in = url.openStream()) {
-                        String fileName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
-                        Path imagePath = Paths.get(folderPath.toString(), fileName);
+                        val imagePath = folderPath.resolve(Paths.get(imageUrl).getFileName());
                         Files.copy(in, imagePath, StandardCopyOption.REPLACE_EXISTING);
                     } catch (IOException e) {
                         e.printStackTrace();

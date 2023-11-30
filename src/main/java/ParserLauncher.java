@@ -2,6 +2,7 @@ import habr.HabrParser;
 import habr.HabrSettings;
 import kirovdramteatr.TheatreParser;
 import kirovdramteatr.TheatreSettings;
+import lombok.val;
 import parser.Completed;
 import parser.NewData;
 import parser.ParserWorker;

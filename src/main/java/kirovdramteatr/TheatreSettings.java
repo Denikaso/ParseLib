@@ -1,5 +1,6 @@
 package kirovdramteatr;
 
+import lombok.val;
 import parser.ParserSettings;
 
 public class TheatreSettings extends ParserSettings {

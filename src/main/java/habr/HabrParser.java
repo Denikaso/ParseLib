@@ -4,24 +4,22 @@ import habr.model.Article;
 import parser.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import lombok.val;
 
 public class HabrParser implements Parser<ArrayList<Article>> {
     @Override
-    public ArrayList<Article> Parse(Document document) {
+    public final ArrayList<Article> Parse(Document document) {
         ArrayList<Article> articles = new ArrayList<>();
-        Elements articleElements = document.select("article");
+        val articleElements = document.select("article");
 
-        Path folderPath = Paths.get(System.getProperty("user.dir"), "images");
+        val folderPath = Paths.get(System.getProperty("user.dir"), "images");
 
         try {
             Files.createDirectories(folderPath);
@@ -30,13 +28,13 @@ public class HabrParser implements Parser<ArrayList<Article>> {
         }
 
         for (Element articleElement : articleElements) {
-            String title = articleElement
+            val title = articleElement
                     .select("h2.tm-title a.tm-title__link")
                     .text();
-            String text = articleElement
+            val text = articleElement
                     .select("div.article-formatted-body")
                     .text();
-            String imageUrl = articleElement
+            val imageUrl = articleElement
                     .select("div.article-formatted-body img")
                     .attr("src");
             articles.add(Article
@@ -48,12 +46,12 @@ public class HabrParser implements Parser<ArrayList<Article>> {
 
             if (imageUrl.startsWith("https")) {
                 try {
-                    URL url = new URL(imageUrl);
+                    val url = new URL(imageUrl);
 
-                    try (InputStream in = url.openStream()) {
-                        String fileName = imageUrl
+                    try (val in = url.openStream()) {
+                        val fileName = imageUrl
                                 .substring(imageUrl.lastIndexOf('/') + 1);
-                        Path imagePath = Paths
+                        val imagePath = Paths
                                 .get(folderPath.toString(), fileName);
                         Files.copy(in, imagePath, StandardCopyOption.REPLACE_EXISTING);
                     } catch (IOException e) {

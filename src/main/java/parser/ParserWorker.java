@@ -1,16 +1,16 @@
 package parser;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
+import lombok.val;
 import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.util.ArrayList;
 
+@Data
+@Builder
 public class ParserWorker<T> {
-    @Setter
-    @Getter
     Parser<T> parser;
-    @Getter
     ParserSettings parserSettings;
     HtmlLoader loader;
     boolean isActive;
@@ -26,7 +26,7 @@ public class ParserWorker<T> {
                 onCompletedList.get(0).OnCompleted(this);
                 return;
             }
-            Document document = loader.GetSourceByPageId(i);
+            val document = loader.getSourceByPageId(i);
             T result = parser.Parse(document);
             onNewDataList.get(0).OnNewData(this,result);
         }

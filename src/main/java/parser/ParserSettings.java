@@ -1,12 +1,13 @@
 package parser;
 
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
+import lombok.val;
 
+@Data
 public abstract class ParserSettings {
     public static String BASE_URL;
     public static String PREFIX;
-    @Getter
     protected int startPoint;
-    @Getter
     protected int endPoint;
 }

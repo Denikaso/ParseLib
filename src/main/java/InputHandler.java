@@ -1,3 +1,5 @@
+import lombok.val;
+
 import java.io.IOException;
 
 public class InputHandler {
@@ -7,14 +9,14 @@ public class InputHandler {
             return;
         }
 
-        String siteUrl = args[0];
-        ParserLauncher parserLauncher = new ParserLauncher(siteUrl);
+        val siteUrl = args[0];
+        val parserLauncher = new ParserLauncher(siteUrl);
 
         if (args.length == 1) {
             parserLauncher.launchSiteWithoutPagination();
         } else if (args.length == 3) {
-            int startPage = Integer.parseInt(args[1]);
-            int endPage = Integer.parseInt(args[2]);
+            val startPage = Integer.parseInt(args[1]);
+            val endPage = Integer.parseInt(args[2]);
             parserLauncher.launchSiteWithPagination(startPage, endPage);
         } else {
             System.out.println("Invalid number of arguments");
