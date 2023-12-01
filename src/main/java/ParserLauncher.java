@@ -2,7 +2,6 @@ import habr.HabrParser;
 import habr.HabrSettings;
 import kirovdramteatr.TheatreParser;
 import kirovdramteatr.TheatreSettings;
-import lombok.val;
 import parser.Completed;
 import parser.NewData;
 import parser.ParserWorker;
@@ -16,7 +15,7 @@ public class ParserLauncher {
         this.siteUrl = siteUrl;
     }
     public final void launchSite() throws IOException {
-        ParserWorker<?> parser = null;
+        ParserWorker<?> parser;
         if (isHabr()) {
             parser = new ParserWorker<>(new HabrParser());
             parser.setParserSettings(new HabrSettings(startPage, endPage));
@@ -29,13 +28,13 @@ public class ParserLauncher {
         }
         parser.onCompletedList.add(new Completed());
         parser.onNewDataList.add(new NewData());
-        parser.Start();
+        parser.start();
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        parser.Abort();
+        parser.abort();
     }
 
     public final void launchSiteWithoutPagination() throws IOException {

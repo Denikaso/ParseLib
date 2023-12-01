@@ -1,6 +1,5 @@
 package parser;
 
-import lombok.val;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import java.io.IOException;

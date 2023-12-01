@@ -15,7 +15,7 @@ import lombok.val;
 
 public class HabrParser implements Parser<ArrayList<Article>> {
     @Override
-    public final ArrayList<Article> Parse(Document document) {
+    public final ArrayList<Article> parse(Document document) {
         ArrayList<Article> articles = new ArrayList<>();
         val articleElements = document.select("article");
 

@@ -1,7 +1,9 @@
+import lombok.NoArgsConstructor;
 import lombok.val;
 
 import java.io.IOException;
 
+@NoArgsConstructor
 public class InputHandler {
     public static void handleArguments(String[] args) throws IOException {
         if (args.length == 0) {

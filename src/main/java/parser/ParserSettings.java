@@ -1,8 +1,6 @@
 package parser;
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.val;
 
 @Data
 public abstract class ParserSettings {

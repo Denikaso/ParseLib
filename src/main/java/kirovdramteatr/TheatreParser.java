@@ -10,14 +10,13 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 public class TheatreParser implements Parser<ArrayList<Poster>> {
     @Override
-    public final ArrayList<Poster> Parse(Document document) {
+    public final ArrayList<Poster> parse(Document document) {
         ArrayList<Poster> posters = new ArrayList<>();
         val postersElements = document.select("div.t_afisha");
         val folderPath = Paths.get(System.getProperty("user.dir"), "images");
