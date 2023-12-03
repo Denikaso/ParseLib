@@ -1,3 +1,5 @@
+import ekvus.EkvusParser;
+import ekvus.EkvusSettings;
 import habr.HabrParser;
 import habr.HabrSettings;
 import kirovdramteatr.TheatreParser;
@@ -22,6 +24,9 @@ public class ParserLauncher {
         } else if (isTheatre()) {
             parser = new ParserWorker<>(new TheatreParser());
             parser.setParserSettings(new TheatreSettings(startPage, endPage));
+        } else if (isEkvus()) {
+            parser = new ParserWorker<>(new EkvusParser());
+            parser.setParserSettings(new EkvusSettings(startPage, endPage));
         } else {
             System.out.println("Unknown site: " + siteUrl);
             return;
@@ -54,6 +59,9 @@ public class ParserLauncher {
 
     private boolean isTheatre() {
         return siteUrl.equals("https://kirovdramteatr.ru/afisha");
+    }
+    private boolean isEkvus() {
+        return siteUrl.equals("https://ekvus-kirov.ru/afisha");
     }
 
 }
