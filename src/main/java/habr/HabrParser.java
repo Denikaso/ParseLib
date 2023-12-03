@@ -1,6 +1,6 @@
 package habr;
 
-import habr.model.Article;
+import models.Article;
 import parser.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

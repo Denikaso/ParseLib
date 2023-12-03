@@ -1,44 +1,47 @@
-import ekvus.EkvusParser;
-import ekvus.EkvusSettings;
-import habr.HabrParser;
-import habr.HabrSettings;
-import kirovdramteatr.TheatreParser;
-import kirovdramteatr.TheatreSettings;
+import lombok.val;
 import parser.Completed;
 import parser.NewData;
 import parser.ParserWorker;
+
 import java.io.IOException;
 
 public class ParserLauncher {
     private final String siteUrl;
     private int startPage;
     private int endPage;
-    public ParserLauncher(String siteUrl){
+
+    public ParserLauncher(String siteUrl) {
         this.siteUrl = siteUrl;
     }
+
     public final void launchSite() throws IOException {
-        ParserWorker<?> parser;
-        if (isHabr()) {
-            parser = new ParserWorker<>(new HabrParser());
-            parser.setParserSettings(new HabrSettings(startPage, endPage));
-        } else if (isTheatre()) {
-            parser = new ParserWorker<>(new TheatreParser());
-            parser.setParserSettings(new TheatreSettings(startPage, endPage));
-        } else if (isEkvus()) {
-            parser = new ParserWorker<>(new EkvusParser());
-            parser.setParserSettings(new EkvusSettings(startPage, endPage));
-        } else {
+        val site = Site.fromUrl(siteUrl);
+
+        if (site == null) {
             System.out.println("Unknown site: " + siteUrl);
             return;
         }
+
+        ParserWorker<?> parser = null;
+        try {
+            parser = new ParserWorker<>(site.getParserClass().getDeclaredConstructor().newInstance());
+            parser.setParserSetting(site.getSettingClass().getDeclaredConstructor(int.class, int.class)
+                    .newInstance(startPage, endPage));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
         parser.onCompletedList.add(new Completed());
         parser.onNewDataList.add(new NewData());
         parser.start();
+
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         parser.abort();
     }
 
@@ -52,16 +55,6 @@ public class ParserLauncher {
         this.startPage = startPage;
         this.endPage = endPage;
         launchSite();
-    }
-    private boolean isHabr() {
-        return siteUrl.equals("https://habr.com/ru/all");
-    }
-
-    private boolean isTheatre() {
-        return siteUrl.equals("https://kirovdramteatr.ru/afisha");
-    }
-    private boolean isEkvus() {
-        return siteUrl.equals("https://ekvus-kirov.ru/afisha");
     }
 
 }

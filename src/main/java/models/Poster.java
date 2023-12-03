@@ -1,4 +1,4 @@
-package ekvus.model;
+package models;
 
 import lombok.Builder;
 import lombok.Data;
@@ -12,4 +12,3 @@ public class Poster {
     private final String duration;
     private final String ageLimit;
 }
-

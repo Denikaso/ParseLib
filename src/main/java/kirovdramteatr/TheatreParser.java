@@ -1,6 +1,6 @@
 package kirovdramteatr;
 
-import kirovdramteatr.model.Poster;
+import models.Poster;
 import lombok.val;
 import parser.Parser;
 import org.jsoup.nodes.Document;

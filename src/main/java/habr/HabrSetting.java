@@ -1,9 +1,9 @@
 package habr;
 
-import parser.ParserSettings;
+import parser.ParserSetting;
 
-public class HabrSettings extends ParserSettings {
-    public HabrSettings(int start, int end) {
+public class HabrSetting extends ParserSetting {
+    public HabrSetting(int start, int end) {
         startPoint = start;
         endPoint = end;
         BASE_URL = "https://habr.com/ru/all";

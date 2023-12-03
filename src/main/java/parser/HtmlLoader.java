@@ -7,7 +7,7 @@ import java.io.IOException;
 public class HtmlLoader {
     String url;
 
-    public HtmlLoader(ParserSettings settings) {
+    public HtmlLoader(ParserSetting settings) {
         url = settings.BASE_URL+"/"+ settings.PREFIX;
     }
 

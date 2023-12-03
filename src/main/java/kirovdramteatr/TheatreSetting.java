@@ -1,9 +1,9 @@
 package kirovdramteatr;
 
-import parser.ParserSettings;
+import parser.ParserSetting;
 
-public class TheatreSettings extends ParserSettings {
-    public TheatreSettings(int start, int end){
+public class TheatreSetting extends ParserSetting {
+    public TheatreSetting(int start, int end){
         startPoint = start;
         endPoint = end;
         BASE_URL = "https://kirovdramteatr.ru/afisha";

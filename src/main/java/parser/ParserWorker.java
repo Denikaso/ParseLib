@@ -1,6 +1,5 @@
 package parser;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.val;
 import java.io.IOException;
@@ -10,7 +9,7 @@ import java.util.List;
 @Data
 public class ParserWorker<T> {
     Parser<T> parser;
-    ParserSettings parserSettings;
+    ParserSetting parserSetting;
     HtmlLoader loader;
     boolean isActive;
     public List<OnNewDataHandler<T>> onNewDataList = new ArrayList<>();
@@ -20,7 +19,7 @@ public class ParserWorker<T> {
     }
 
     private void worker() throws IOException {
-        for (int i = parserSettings.getStartPoint(); i <= parserSettings.getEndPoint(); i++) {
+        for (int i = parserSetting.getStartPoint(); i <= parserSetting.getEndPoint(); i++) {
             if (!isActive) {
                 onCompletedList.get(0).onCompleted(this);
                 return;
@@ -41,9 +40,9 @@ public class ParserWorker<T> {
     public void abort() {
         isActive = false;
     }
-    public void setParserSettings(ParserSettings parserSettings) {
-        this.parserSettings = parserSettings;
-        loader = new HtmlLoader(parserSettings);
+    public void setParserSetting(ParserSetting parserSetting) {
+        this.parserSetting = parserSetting;
+        loader = new HtmlLoader(parserSetting);
     }
 
     public interface OnNewDataHandler<T> {
