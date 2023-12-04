@@ -1,10 +1,12 @@
-import exceptions.ParsingRuntimeException;
+package org.example;
+
+import org.example.exceptions.ParsingRuntimeException;
 import lombok.val;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import parser.Completed;
-import parser.NewData;
-import parser.ParserWorker;
+import org.example.parser.Completed;
+import org.example.parser.NewData;
+import org.example.parser.ParserWorker;
 import java.io.IOException;
 
 public class ParserLauncher {

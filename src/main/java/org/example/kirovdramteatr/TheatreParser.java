@@ -1,8 +1,8 @@
-package kirovdramteatr;
+package org.example.kirovdramteatr;
 
-import models.Poster;
+import org.example.models.Poster;
 import lombok.val;
-import parser.Parser;
+import org.example.parser.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import java.io.IOException;
@@ -67,7 +67,7 @@ public class TheatreParser implements Parser<ArrayList<Poster>> {
                         val fileName = imageUrl
                                 .substring(imageUrl.lastIndexOf('/') + 1);
                         val imagePath = Paths
-                                .get(folderPath.toString(), fileName);
+                                .get(folderPath.toString(),  imageUrl.substring(imageUrl.lastIndexOf('/') + 1));
                         Files.copy(in, imagePath, StandardCopyOption.REPLACE_EXISTING);
                     } catch (IOException e) {
                         e.printStackTrace();

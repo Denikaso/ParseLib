@@ -1,12 +1,12 @@
-package ekvus;
+package org.example.ekvus;
 
-import models.Poster;
+import org.example.models.Poster;
 import lombok.val;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import parser.Parser;
+import org.example.parser.Parser;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;

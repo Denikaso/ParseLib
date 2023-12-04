@@ -1,12 +1,14 @@
-import ekvus.EkvusParser;
-import ekvus.EkvusSetting;
-import habr.HabrParser;
-import habr.HabrSetting;
-import kirovdramteatr.TheatreParser;
-import kirovdramteatr.TheatreSetting;
+package org.example;
+
+import org.example.ekvus.EkvusParser;
+import org.example.ekvus.EkvusSetting;
+import org.example.habr.HabrParser;
+import org.example.habr.HabrSetting;
+import org.example.kirovdramteatr.TheatreParser;
+import org.example.kirovdramteatr.TheatreSetting;
 import lombok.Getter;
-import parser.Parser;
-import parser.ParserSetting;
+import org.example.parser.Parser;
+import org.example.parser.ParserSetting;
 
 @Getter
 public enum Site {

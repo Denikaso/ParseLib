@@ -1,12 +1,12 @@
-package kirovdramteatr;
+package org.example.kirovdramteatr;
 
-import parser.ParserSetting;
+import org.example.parser.ParserSetting;
 
 public class TheatreSetting extends ParserSetting {
     public TheatreSetting(int start, int end){
         startPoint = start;
         endPoint = end;
-        BASE_URL = "https://kirovdramteatr.ru/afisha";
-        PREFIX = "";
+        baseUrl = "https://kirovdramteatr.ru/afisha";
+        prefix = "";
     }
 }

@@ -1,7 +1,7 @@
-package habr;
+package org.example.habr;
 
-import models.Article;
-import parser.Parser;
+import org.example.models.Article;
+import org.example.parser.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import java.io.IOException;

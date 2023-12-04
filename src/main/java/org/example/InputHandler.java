@@ -1,10 +1,11 @@
+package org.example;
+
 import lombok.NoArgsConstructor;
 import lombok.val;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import static java.lang.System.*;
 
 @NoArgsConstructor
