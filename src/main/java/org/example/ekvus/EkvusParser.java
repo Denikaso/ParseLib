@@ -1,5 +1,8 @@
 package org.example.ekvus;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.example.exceptions.ParsingRuntimeException;
 import org.example.models.Poster;
 import lombok.val;
 import org.jsoup.Jsoup;
@@ -7,15 +10,22 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.example.parser.Parser;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class EkvusParser implements Parser<ArrayList<Poster>> {
+    private static final Logger logger = LogManager.getLogger(EkvusParser.class);
+    private static final String NO_DATA = "Нет данных";
 
     @Override
     public ArrayList<Poster> parse(Document document) {
@@ -29,76 +39,101 @@ public class EkvusParser implements Parser<ArrayList<Poster>> {
 
         try {
             Files.createDirectories(folderPath);
+            logger.info("Созданы директории для сохранения изображений.");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Ошибка при создании директорий", e);
+            throw new ParsingRuntimeException("Ошибка при создании директорий", e);
         }
 
-        for(Element poster : postersElements){
-            if (poster.getElementsByTag("td").size() < 2){
-                continue;
-            }
-            val date = poster.getElementsByTag("font").text();
-            val title = poster.select("td:eq(1)").select("a").textNodes().get(0).text();
-            val ageLimit = poster.select("[class=\"al_s\"], [class=\"al\"]").text();
-
-            Document posterDocument = null;
+        for (Element poster : postersElements) {
             try {
-                posterDocument = loadPerfomance(poster);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            val duration = getDuration(posterDocument);
-            val imageUrl = getImageUrl(posterDocument);
-            posters.add(Poster.builder()
-                    .title(title)
-                    .imageUrl(imageUrl)
-                    .ageLimit(ageLimit)
-                    .date(date)
-                    .duration(duration)
-                    .build());
-
-            if (imageUrl.startsWith("https")) {
-                try {
-                    val url = new URL(imageUrl);
-
-                    try (val in = url.openStream()) {
-                        val fileName = imageUrl
-                                .substring(imageUrl.lastIndexOf('/') + 1);
-                        val imagePath = Paths
-                                .get(folderPath.toString(), fileName);
-                        Files.copy(in, imagePath, StandardCopyOption.REPLACE_EXISTING);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
+                if (poster.getElementsByTag("td").size() < 2) {
+                    continue;
                 }
+
+                val date = poster.getElementsByTag("font").text();
+                val title = Optional.ofNullable(poster.select("td:eq(1)").select("a").first())
+                        .map(Element::text)
+                        .orElse(NO_DATA);
+
+                val ageLimit = Optional.of(poster.select("[class=\"al_s\"], [class=\"al\"]").text())
+                        .orElse(NO_DATA);
+
+                Document posterDocument = loadPerformance(poster);
+
+                val duration = getDuration(posterDocument);
+                val imageUrl = getImageUrl(posterDocument);
+
+                posters.add(Poster.builder()
+                        .title(title)
+                        .imageUrl(imageUrl)
+                        .ageLimit(ageLimit)
+                        .date(date)
+                        .duration(duration)
+                        .build());
+
+                if (imageUrl.startsWith("https")) {
+                    copyImage(imageUrl, folderPath);
+                }
+
+            } catch (Exception e) {
+                logger.error("Ошибка при обработке данных афиши", e);
+                throw new ParsingRuntimeException("Ошибка при обработке данных афиши", e);
             }
         }
         return posters;
     }
-    private static Document loadPerfomance( Element afisha) throws IOException {
-        String href = afisha.getElementsByTag("a").get(1).attr("href");
-        return Jsoup.connect("https://ekvus-kirov.ru"+href).get();
+
+    private static Document loadPerformance(Element afisha) {
+        try {
+            String href = afisha.getElementsByTag("a").get(1).attr("href");
+            return Jsoup.connect("https://ekvus-kirov.ru" + href).get();
+        } catch (IOException exception) {
+            throw new ParsingRuntimeException("Ошибка при загрузке информации о спектакле", exception);
+        }
     }
-    private static String getDuration(Document doc){
+
+    private static String getDuration(Document doc) {
         String dur = "Продолжительность спектакля:";
         Elements durations = doc.getElementsMatchingText(dur);
-        String duration="";
-        if (!durations.isEmpty()){
-            duration = durations.get(8).text().substring(dur.length());
-        }
-        return duration;
+        return Optional.of(durations.isEmpty() ? NO_DATA : durations.get(8).text().substring(dur.length()))
+                .orElse(NO_DATA);
     }
-    private static String getImageUrl(Document doc){
-        String imageUrl="";
+
+    private static String getImageUrl(Document doc) {
         Element image = doc.getElementById("photo_osnova");
-        if (image != null){
-            imageUrl=image.absUrl("src");
+        return Optional.ofNullable(image != null ? image.absUrl("src") : doc.getElementsByClass("img_right").first())
+                .map(element -> {
+                    if (element instanceof Element e) {
+                        return e.absUrl("src");
+                    } else {
+                        return NO_DATA;
+                    }
+                })
+                .orElse(NO_DATA);
+    }
+
+    private void copyImage(String imageUrl, Path folderPath) {
+        try {
+            URI uri = new URI(imageUrl);
+            URL url = uri.toURL();
+
+            String fileName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+            Path imagePath = Paths.get(folderPath.toString(), fileName);
+            downloadImage(url, imagePath);
+            logger.info("Изображение скопировано успешно: {}", fileName);
+        } catch (URISyntaxException | MalformedURLException e) {
+            logger.error("Ошибка при обработке URL", e);
+            throw new ParsingRuntimeException("Ошибка при обработке URL", e);
         }
-        else if (doc.getElementsByClass("img_right").first() != null){
-            imageUrl = doc.getElementsByClass("img_right").first().absUrl("src");
+    }
+
+    private void downloadImage(URL url, Path imagePath) {
+        try (val in = url.openStream()) {
+            Files.copy(in, imagePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            logger.error("Ошибка при загрузке изображения", e);
+            throw new ParsingRuntimeException("Ошибка при загрузке изображения", e);
         }
-        return imageUrl;
     }
 }
