@@ -12,8 +12,8 @@ public class ParserWorker<T> {
     ParserSetting parserSetting;
     HtmlLoader loader;
     boolean isActive;
-    public List<OnNewDataHandler<T>> onNewDataList = new ArrayList<>();
-    public List<OnCompleted> onCompletedList = new ArrayList<>();
+    protected List<OnNewDataHandler<T>> onNewDataList = new ArrayList<>();
+    protected List<OnCompleted> onCompletedList = new ArrayList<>();
     public ParserWorker(Parser<T> parser) {
         this.parser = parser;
     }

@@ -6,7 +6,6 @@ import parser.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -21,9 +20,9 @@ public class TheatreParser implements Parser<ArrayList<Poster>> {
         val postersElements = document.select("div.t_afisha");
         val folderPath = Paths.get(System.getProperty("user.dir"), "images");
 
-        try{
+        try {
             Files.createDirectories(folderPath);
-        } catch(Exception e){
+        } catch(Exception e) {
             e.printStackTrace();
         }
 
@@ -60,20 +59,21 @@ public class TheatreParser implements Parser<ArrayList<Poster>> {
                     .ageLimit(ageLimit)
                     .build());
 
-            if(imageUrl.startsWith("https"))
-            {
-                try
-                {
+            if(imageUrl.startsWith("https")) {
+                try {
                     val url = new URL(imageUrl);
-                    try (InputStream in = url.openStream()) {
-                        val imagePath = folderPath.resolve(Paths.get(imageUrl).getFileName());
+
+                    try (val in = url.openStream()) {
+                        val fileName = imageUrl
+                                .substring(imageUrl.lastIndexOf('/') + 1);
+                        val imagePath = Paths
+                                .get(folderPath.toString(), fileName);
                         Files.copy(in, imagePath, StandardCopyOption.REPLACE_EXISTING);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                catch (MalformedURLException e) {
-                    throw new RuntimeException(e);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
                 }
             }
         }

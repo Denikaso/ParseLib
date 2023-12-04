@@ -1,11 +1,14 @@
+import exceptions.ParsingRuntimeException;
 import lombok.val;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import parser.Completed;
 import parser.NewData;
 import parser.ParserWorker;
-
 import java.io.IOException;
 
 public class ParserLauncher {
+    private static final Logger logger = LogManager.getLogger(ParserLauncher.class);
     private final String siteUrl;
     private int startPage;
     private int endPage;
@@ -14,47 +17,76 @@ public class ParserLauncher {
         this.siteUrl = siteUrl;
     }
 
-    public final void launchSite() throws IOException {
-        val site = Site.fromUrl(siteUrl);
-
-        if (site == null) {
-            System.out.println("Unknown site: " + siteUrl);
-            return;
-        }
-
-        ParserWorker<?> parser = null;
+    public final void launchSite() {
         try {
-            parser = new ParserWorker<>(site.getParserClass().getDeclaredConstructor().newInstance());
-            parser.setParserSetting(site.getSettingClass().getDeclaredConstructor(int.class, int.class)
-                    .newInstance(startPage, endPage));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
+            val site = Site.fromUrl(siteUrl);
+
+            if (site == null) {
+                logger.error("Неизвестный сайт: {} ", siteUrl);
+                return;
+            }
+
+            ParserWorker<?> parser = createParser(site);
+
+            parser.getOnCompletedList().add(new Completed());
+            parser.getOnNewDataList().add(new NewData<>());
+            parser.start();
+
+            sleepForMilliseconds();
+
+            parser.abort();
+            logger.info("Парсинг сайта {} завершен", siteUrl);
+        } catch (IOException exception) {
+            handleIOException(exception);
+        } catch (ParsingRuntimeException exception) {
+            handleParsingRuntimeException(exception);
+        } catch (Exception exception) {
+            handleGeneralException(exception);
         }
-
-        parser.onCompletedList.add(new Completed());
-        parser.onNewDataList.add(new NewData());
-        parser.start();
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        parser.abort();
     }
 
-    public final void launchSiteWithoutPagination() throws IOException {
+    public final void launchSiteWithoutPagination() {
         startPage = 1;
         endPage = 1;
         launchSite();
     }
 
-    public final void launchSiteWithPagination(int startPage, int endPage) throws IOException {
+    public final void launchSiteWithPagination (int startPage, int endPage){
         this.startPage = startPage;
         this.endPage = endPage;
         launchSite();
+    }
+    private ParserWorker<?> createParser(Site site) {
+        try {
+            ParserWorker<?> parser = new ParserWorker<>(site.getParserClass().getDeclaredConstructor().newInstance());
+            parser.setParserSetting(site.getSettingClass().getDeclaredConstructor(int.class, int.class)
+                    .newInstance(startPage, endPage));
+            return parser;
+        } catch (Exception exception) {
+            logger.error("Ошибка при создании парсера", exception);
+            throw new ParsingRuntimeException("Ошибка при создании парсера", exception);
+        }
+    }
+    private void sleepForMilliseconds() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            logger.error("Прерывание потока сна", e);
+            Thread.currentThread().interrupt();
+        }
+    }
+    private void handleIOException(IOException exception) {
+        logger.error("Ошибка при запуске сайта", exception);
+        throw new ParsingRuntimeException("Ошибка при запуске сайта", exception);
+    }
+
+    private void handleParsingRuntimeException(ParsingRuntimeException exception) {
+        logger.error("Ошибка при запуске сайта: {} ", exception.getMessage());
+        throw exception;
+    }
+
+    private void handleGeneralException(Exception exception) {
+        logger.error("Необработанная ошибка при запуске сайта", exception);
     }
 
 }
