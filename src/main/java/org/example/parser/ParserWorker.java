@@ -47,7 +47,7 @@ public class ParserWorker<T> {
     }
 
     public interface OnNewDataHandler<T> {
-        void onNewData(Object sender, T e);
+        void onNewData(Object sender, T args);
     }
 
     public interface OnCompleted {

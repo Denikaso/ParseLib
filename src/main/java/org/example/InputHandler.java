@@ -10,7 +10,7 @@ import static java.lang.System.*;
 
 @NoArgsConstructor
 public class InputHandler {
-    private static final Logger logger = LogManager.getLogger(InputHandler.class);
+    private final Logger logger = LogManager.getLogger(InputHandler.class);
     public void handleArguments(String[] args) {
         if (args.length == 0) {
             err.println("Ошибка: Не указаны аргументы. Используйте: java -jar файл.jar ссылка_на_сайт [начальная_страница конечная_страница]");

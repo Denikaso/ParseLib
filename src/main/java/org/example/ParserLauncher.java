@@ -10,7 +10,8 @@ import org.example.parser.ParserWorker;
 import java.io.IOException;
 
 public class ParserLauncher {
-    private static final Logger logger = LogManager.getLogger(ParserLauncher.class);
+    private static final int SLEEP_TIME = 5000;
+    private final Logger logger = LogManager.getLogger(ParserLauncher.class);
     private final String siteUrl;
     private int startPage;
     private int endPage;
@@ -60,8 +61,11 @@ public class ParserLauncher {
     }
     private ParserWorker<?> createParser(Site site) {
         try {
-            ParserWorker<?> parser = new ParserWorker<>(site.getParserClass().getDeclaredConstructor().newInstance());
-            parser.setParserSetting(site.getSettingClass().getDeclaredConstructor(int.class, int.class)
+            ParserWorker<?> parser = new ParserWorker<>(site.getParserClass()
+                    .getDeclaredConstructor()
+                    .newInstance());
+            parser.setParserSetting(site.getSettingClass()
+                    .getDeclaredConstructor(int.class, int.class)
                     .newInstance(startPage, endPage));
             return parser;
         } catch (Exception exception) {
@@ -71,9 +75,9 @@ public class ParserLauncher {
     }
     private void sleepForMilliseconds() {
         try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            logger.error("Прерывание потока сна", e);
+            Thread.sleep(SLEEP_TIME);
+        } catch (InterruptedException exception) {
+            logger.error("Прерывание потока сна", exception);
             Thread.currentThread().interrupt();
         }
     }

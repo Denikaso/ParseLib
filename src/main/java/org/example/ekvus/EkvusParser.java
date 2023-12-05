@@ -16,11 +16,10 @@ import java.util.Optional;
 
 public class EkvusParser implements Parser<ArrayList<Poster>> {
     private static final Logger logger = LogManager.getLogger(EkvusParser.class);
-    private static final String NO_DATA = "Нет данных";
+
     @Override
     public ArrayList<Poster> parse(Document document, ImageProcessor imageProcessor) {
         ArrayList<Poster> posters = new ArrayList<>();
-        imageProcessor.createImageDirectory();
         val postersElements = document.getElementsByClass("page_box")
                 .get(0)
                 .getElementsByTag("table")
@@ -68,8 +67,8 @@ public class EkvusParser implements Parser<ArrayList<Poster>> {
 
     private static Document loadPerformance(Element poster) {
         try {
-            val href = poster.getElementsByTag("a").get(1).attr("href");
-            return Jsoup.connect("https://ekvus-kirov.ru" + href).get();
+            return Jsoup.connect("https://ekvus-kirov.ru" +
+                    poster.getElementsByTag("a").get(1).attr("href")).get();
         } catch (IOException exception) {
             throw new ParsingRuntimeException("Ошибка при загрузке информации о спектакле", exception);
         }
@@ -86,8 +85,8 @@ public class EkvusParser implements Parser<ArrayList<Poster>> {
         val image = doc.getElementById("photo_osnova");
         return Optional.ofNullable(image != null ? image.absUrl("src") : doc.getElementsByClass("img_right").first())
                 .map(element -> {
-                    if (element instanceof Element e) {
-                        return e.absUrl("src");
+                    if (element instanceof Element imageElement) {
+                        return imageElement.absUrl("src");
                     } else {
                         return NO_DATA;
                     }

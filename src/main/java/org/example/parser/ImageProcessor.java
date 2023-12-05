@@ -17,9 +17,9 @@ import java.nio.file.StandardCopyOption;
 
 @Data
 public class ImageProcessor {
-    private static final Logger logger = LogManager.getLogger(ImageProcessor.class);
     private static final String FOLDER_NAME = "images";
     private static final Path ROOT_PATH = Paths.get(".").toAbsolutePath();
+    private final Logger logger = LogManager.getLogger(ImageProcessor.class);
     private final Path folderPath;
 
     public ImageProcessor() {
@@ -42,11 +42,9 @@ public class ImageProcessor {
 
     public void copyImage(String imageUrl) {
         try {
-            URI uri = new URI(imageUrl);
-            URL url = uri.toURL();
+            URL url = new URI(imageUrl).toURL();
 
-            val fileName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
-            val imagePath = Paths.get(folderPath.toString(), fileName);
+            val imagePath = Paths.get(folderPath.toString(), imageUrl.substring(imageUrl.lastIndexOf('/') + 1));
             downloadImage(url, imagePath);
         } catch (URISyntaxException | MalformedURLException exception) {
             logger.error("Ошибка при обработке URL", exception);
