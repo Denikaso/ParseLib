@@ -23,15 +23,15 @@ public class InputHandler {
 
         Map<Integer, Runnable> actions = new HashMap<>();
         actions.put(1, () -> {
-            parserLauncher.launchSiteWithoutPagination();
             logger.info("Запущен парсинг сайта {} без пагинации.", siteUrl);
+            parserLauncher.launchSiteWithoutPagination();
         });
         actions.put(3, () -> {
             try {
                 val startPage = Integer.parseInt(args[1]);
                 val endPage = Integer.parseInt(args[2]);
-                parserLauncher.launchSiteWithPagination(startPage, endPage);
                 logger.info("Запущен парсинг сайта {} с пагинацией от страницы {} до {}.",siteUrl, startPage, endPage);
+                parserLauncher.launchSiteWithPagination(startPage, endPage);
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException exception) {
                 logger.error("Ошибка при разборе аргументов для парсинга сайта с пагинацией", exception);
             }

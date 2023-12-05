@@ -1,5 +1,6 @@
 package org.example.parser;
 
+import lombok.val;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import java.io.IOException;
@@ -12,7 +13,7 @@ public class HtmlLoader {
     }
 
     public Document getSourceByPageId(int id) throws IOException {
-        String currentUrl = url.replace("{CurrentId}", Integer.toString(id));
+        val currentUrl = url.replace("{CurrentId}", Integer.toString(id));
         return Jsoup.connect(currentUrl).get();
     }
 }

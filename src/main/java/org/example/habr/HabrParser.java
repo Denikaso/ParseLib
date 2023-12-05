@@ -9,13 +9,10 @@ import java.util.ArrayList;
 import lombok.val;
 
 public class HabrParser implements Parser<ArrayList<Article>> {
-    private final ImageProcessor imageProcessor = new ImageProcessor();
     @Override
-    public final ArrayList<Article> parse(Document document) {
+    public final ArrayList<Article> parse(Document document, ImageProcessor imageProcessor) {
         ArrayList<Article> articles = new ArrayList<>();
         val articleElements = document.select("article");
-
-        imageProcessor.createImageDirectory();
 
         for (Element articleElement : articleElements) {
             val title = articleElement

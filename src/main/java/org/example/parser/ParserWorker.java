@@ -17,15 +17,16 @@ public class ParserWorker<T> {
     public ParserWorker(Parser<T> parser) {
         this.parser = parser;
     }
-
+    private final ImageProcessor imageProcessor = new ImageProcessor();
     private void worker() throws IOException {
+        imageProcessor.createImageDirectory();
         for (int i = parserSetting.getStartPoint(); i <= parserSetting.getEndPoint(); i++) {
             if (!isActive) {
                 onCompletedList.get(0).onCompleted(this);
                 return;
             }
             val document = loader.getSourceByPageId(i);
-            T result = parser.parse(document);
+            T result = parser.parse(document, imageProcessor);
             onNewDataList.get(0).onNewData(this,result);
         }
         onCompletedList.get(0).onCompleted(this);

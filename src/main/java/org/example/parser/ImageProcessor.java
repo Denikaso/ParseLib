@@ -1,10 +1,10 @@
 package org.example.parser;
 
+import lombok.Data;
 import lombok.val;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.exceptions.ParsingRuntimeException;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+@Data
 public class ImageProcessor {
     private static final Logger logger = LogManager.getLogger(ImageProcessor.class);
     private static final String FOLDER_NAME = "images";
@@ -44,10 +45,9 @@ public class ImageProcessor {
             URI uri = new URI(imageUrl);
             URL url = uri.toURL();
 
-            String fileName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
-            Path imagePath = Paths.get(folderPath.toString(), fileName);
+            val fileName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+            val imagePath = Paths.get(folderPath.toString(), fileName);
             downloadImage(url, imagePath);
-            logger.info("Изображение скопировано успешно: {}", fileName);
         } catch (URISyntaxException | MalformedURLException exception) {
             logger.error("Ошибка при обработке URL", exception);
             throw new ParsingRuntimeException("Ошибка при обработке URL", exception);

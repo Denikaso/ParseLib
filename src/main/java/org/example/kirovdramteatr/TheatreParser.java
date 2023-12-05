@@ -15,10 +15,9 @@ import lombok.val;
 public class TheatreParser implements Parser<ArrayList<Poster>> {
     private static final Logger logger = LogManager.getLogger(TheatreParser.class);
     private static final String NO_DATA = "Нет данных";
-    private final ImageProcessor imageProcessor = new ImageProcessor();
 
     @Override
-    public final ArrayList<Poster> parse(Document document) {
+    public final ArrayList<Poster> parse(Document document, ImageProcessor imageProcessor) {
         ArrayList<Poster> posters = new ArrayList<>();
         val postersElements = document.select("div.t_afisha");
 

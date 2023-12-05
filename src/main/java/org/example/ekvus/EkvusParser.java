@@ -9,7 +9,6 @@ import org.example.parser.ImageProcessor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.example.parser.Parser;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,9 +17,8 @@ import java.util.Optional;
 public class EkvusParser implements Parser<ArrayList<Poster>> {
     private static final Logger logger = LogManager.getLogger(EkvusParser.class);
     private static final String NO_DATA = "Нет данных";
-    private final ImageProcessor imageProcessor = new ImageProcessor();
     @Override
-    public ArrayList<Poster> parse(Document document) {
+    public ArrayList<Poster> parse(Document document, ImageProcessor imageProcessor) {
         ArrayList<Poster> posters = new ArrayList<>();
         imageProcessor.createImageDirectory();
         val postersElements = document.getElementsByClass("page_box")
@@ -43,7 +41,7 @@ public class EkvusParser implements Parser<ArrayList<Poster>> {
                 val ageLimit = Optional.of(poster.select("[class=\"al_s\"], [class=\"al\"]").text())
                         .orElse(NO_DATA);
 
-                Document posterDocument = loadPerformance(poster);
+                val posterDocument = loadPerformance(poster);
 
                 val duration = getDuration(posterDocument);
                 val imageUrl = getImageUrl(posterDocument);
@@ -60,32 +58,32 @@ public class EkvusParser implements Parser<ArrayList<Poster>> {
                     imageProcessor.copyImage(imageUrl);
                 }
 
-            } catch (Exception e) {
-                logger.error("Ошибка при обработке данных афиши", e);
-                throw new ParsingRuntimeException("Ошибка при обработке данных афиши", e);
+            } catch (Exception exception) {
+                logger.error("Ошибка при обработке данных афиши", exception);
+                throw new ParsingRuntimeException("Ошибка при обработке данных афиши", exception);
             }
         }
         return posters;
     }
 
-    private static Document loadPerformance(Element afisha) {
+    private static Document loadPerformance(Element poster) {
         try {
-            String href = afisha.getElementsByTag("a").get(1).attr("href");
+            val href = poster.getElementsByTag("a").get(1).attr("href");
             return Jsoup.connect("https://ekvus-kirov.ru" + href).get();
         } catch (IOException exception) {
             throw new ParsingRuntimeException("Ошибка при загрузке информации о спектакле", exception);
         }
     }
 
-    private static String getDuration(Document doc) {
-        String dur = "Продолжительность спектакля:";
-        Elements durations = doc.getElementsMatchingText(dur);
+    private static String getDuration(Document document) {
+        val dur = "Продолжительность спектакля:";
+        val durations = document.getElementsMatchingText(dur);
         return Optional.of(durations.isEmpty() ? NO_DATA : durations.get(8).text().substring(dur.length()))
                 .orElse(NO_DATA);
     }
 
     private static String getImageUrl(Document doc) {
-        Element image = doc.getElementById("photo_osnova");
+        val image = doc.getElementById("photo_osnova");
         return Optional.ofNullable(image != null ? image.absUrl("src") : doc.getElementsByClass("img_right").first())
                 .map(element -> {
                     if (element instanceof Element e) {
