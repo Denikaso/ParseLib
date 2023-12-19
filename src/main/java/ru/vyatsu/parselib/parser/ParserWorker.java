@@ -1,10 +1,11 @@
 package ru.vyatsu.parselib.parser;
 
 import lombok.Data;
-import lombok.val;
+import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Data
 public class ParserWorker<T> {
@@ -18,22 +19,27 @@ public class ParserWorker<T> {
         this.parser = parser;
     }
     private final ImageProcessor imageProcessor = new ImageProcessor();
-    private void worker() throws IOException {
+    private void worker() {
         imageProcessor.createImageDirectory();
-        for (int i = parserSetting.getStartPoint(); i <= parserSetting.getEndPoint(); i++) {
-            if (!isActive) {
-                onCompletedList.get(0).onCompleted(this);
-                return;
-            }
-            val document = loader.getSourceByPageId(i);
-            T result = parser.parse(document, imageProcessor);
-            onNewDataList.get(0).onNewData(this,result);
-        }
+
+        IntStream.range(parserSetting.getStartPoint(), parserSetting.getEndPoint() + 1)
+                .filter(i -> isActive)
+                .forEachOrdered(i -> {
+                    Document document;
+                    try {
+                        document = loader.getSourceByPageId(i);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    T result = parser.parse(document, imageProcessor);
+                    onNewDataList.get(0).onNewData(this, result);
+                });
+
         onCompletedList.get(0).onCompleted(this);
         isActive = false;
     }
 
-    public void start() throws IOException {
+    public void start() {
         isActive = true;
         worker();
     }
