@@ -6,9 +6,9 @@ import ru.vyatsu.parselib.habr.HabrParser;
 import ru.vyatsu.parselib.habr.HabrSetting;
 import ru.vyatsu.parselib.kirovdramteatr.TheatreParser;
 import ru.vyatsu.parselib.kirovdramteatr.TheatreSetting;
-import lombok.Getter;
 import ru.vyatsu.parselib.parser.Parser;
 import ru.vyatsu.parselib.parser.ParserSetting;
+import lombok.Getter;
 
 @Getter
 public enum Site {

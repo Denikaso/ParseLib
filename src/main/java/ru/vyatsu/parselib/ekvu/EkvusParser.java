@@ -30,26 +30,19 @@ public class EkvusParser implements Parser<ArrayList<Poster>> {
                 .filter(poster -> poster.getElementsByTag("td").size() >= 2)
                 .map(poster -> {
                     try {
-                        val date = poster.getElementsByTag("font").text();
-                        val title = Optional.ofNullable(poster.select("td:eq(1)").select("a").first())
-                                .map(Element::text)
-                                .orElse(NO_DATA);
-
-                        val ageLimit = Optional.of(poster.select("[class=\"al_s\"], [class=\"al\"]").text())
-                                .orElse(NO_DATA);
-
-                        val posterDocument = loadPerformance(poster);
-                        val duration = getDuration(posterDocument);
-                        val imageUrl = getImageUrl(posterDocument);
-
                         return Poster.builder()
-                                .title(title)
-                                .imageUrl(imageUrl)
-                                .ageLimit(ageLimit)
-                                .date(date)
-                                .duration(duration)
+                                .title(Optional.ofNullable(poster.select("td:eq(1)").select("a").first())
+                                        .map(Element::text)
+                                        .orElse(NO_DATA))
+                                .imageUrl(getImageUrl(loadPerformance(poster)))
+                                .ageLimit(Optional.of(poster.select("[class=\"al_s\"], [class=\"al\"]").text())
+                                        .orElse(NO_DATA))
+                                .date(poster.getElementsByTag("font").text())
+                                .duration(Optional.of(document.getElementsMatchingText("Продолжительность спектакля:"))
+                                        .filter(durations -> !durations.isEmpty())
+                                        .map(durations -> durations.get(8).text().substring("Продолжительность спектакля:".length()))
+                                        .orElse(NO_DATA))
                                 .build();
-
                     } catch (Exception exception) {
                         logger.error("Ошибка при обработке данных афиши", exception);
                         throw new ParsingRuntimeException("Ошибка при обработке данных афиши", exception);
@@ -70,13 +63,6 @@ public class EkvusParser implements Parser<ArrayList<Poster>> {
         } catch (IOException exception) {
             throw new ParsingRuntimeException("Ошибка при загрузке информации о спектакле", exception);
         }
-    }
-
-    private static String getDuration(Document document) {
-        val dur = "Продолжительность спектакля:";
-        val durations = document.getElementsMatchingText(dur);
-        return Optional.of(durations.isEmpty() ? NO_DATA : durations.get(8).text().substring(dur.length()))
-                .orElse(NO_DATA);
     }
 
     private static String getImageUrl(Document doc) {

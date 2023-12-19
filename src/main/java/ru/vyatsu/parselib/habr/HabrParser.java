@@ -4,8 +4,8 @@ import ru.vyatsu.parselib.model.Article;
 import ru.vyatsu.parselib.parser.ImageProcessor;
 import ru.vyatsu.parselib.parser.Parser;
 import org.jsoup.nodes.Document;
-import java.util.stream.Collectors;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 import lombok.val;
 
 public class HabrParser implements Parser<ArrayList<Article>> {
@@ -14,23 +14,12 @@ public class HabrParser implements Parser<ArrayList<Article>> {
         val articleElements = document.select("article");
 
         return articleElements.stream()
-                .map(articleElement -> {
-                    val title = articleElement
-                            .select("h2.tm-title a.tm-title__link")
-                            .text();
-                    val text = articleElement
-                            .select("div.article-formatted-body")
-                            .text();
-                    val imageUrl = articleElement
-                            .select("div.article-formatted-body img")
-                            .attr("src");
-
-                    return Article.builder()
-                            .title(title)
-                            .text(text)
-                            .imageUrl(imageUrl)
-                            .build();
-                })
+                .map(articleElement -> Article.builder()
+                        .title(articleElement.select("h2.tm-title a.tm-title__link").text())
+                        .text(articleElement.select("div.article-formatted-body").text())
+                        .imageUrl(articleElement.select("div.article-formatted-body img").attr("src"))
+                        .build()
+                )
                 .peek(article -> {
                     if (article.getImageUrl().startsWith("https")) {
                         imageProcessor.copyImage(article.getImageUrl());

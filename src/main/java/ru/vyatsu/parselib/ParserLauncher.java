@@ -8,8 +8,6 @@ import ru.vyatsu.parselib.parser.Completed;
 import ru.vyatsu.parselib.parser.NewData;
 import ru.vyatsu.parselib.parser.ParserWorker;
 
-import java.io.IOException;
-
 public class ParserLauncher {
     private static final int SLEEP_TIME = 5000;
     private final Logger logger = LogManager.getLogger(ParserLauncher.class);
@@ -40,8 +38,6 @@ public class ParserLauncher {
 
             parser.abort();
             logger.info("Парсинг сайта {} завершен", siteUrl);
-        } catch (IOException exception) {
-            handleIOException(exception);
         } catch (ParsingRuntimeException exception) {
             handleParsingRuntimeException(exception);
         } catch (Exception exception) {
@@ -83,10 +79,6 @@ public class ParserLauncher {
             logger.error("Прерывание потока сна", exception);
             Thread.currentThread().interrupt();
         }
-    }
-    private void handleIOException(IOException exception) {
-        logger.error("Ошибка при запуске сайта", exception);
-        throw new ParsingRuntimeException("Ошибка при запуске сайта", exception);
     }
 
     private void handleParsingRuntimeException(ParsingRuntimeException exception) {
