@@ -1,4 +1,4 @@
-package org.example.models;
+package ru.vyatsu.parselib.model;
 
 import lombok.Builder;
 import lombok.Data;

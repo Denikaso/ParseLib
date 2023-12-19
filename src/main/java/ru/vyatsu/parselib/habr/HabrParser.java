@@ -1,8 +1,8 @@
-package org.example.habr;
+package ru.vyatsu.parselib.habr;
 
-import org.example.models.Article;
-import org.example.parser.ImageProcessor;
-import org.example.parser.Parser;
+import ru.vyatsu.parselib.model.Article;
+import ru.vyatsu.parselib.parser.ImageProcessor;
+import ru.vyatsu.parselib.parser.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import java.util.ArrayList;

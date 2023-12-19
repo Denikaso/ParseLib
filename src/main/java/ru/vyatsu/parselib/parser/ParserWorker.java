@@ -1,4 +1,4 @@
-package org.example.parser;
+package ru.vyatsu.parselib.parser;
 
 import lombok.Data;
 import lombok.val;

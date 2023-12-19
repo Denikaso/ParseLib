@@ -1,4 +1,4 @@
-package org.example;
+package ru.vyatsu.parselib;
 
 import lombok.NoArgsConstructor;
 import lombok.val;

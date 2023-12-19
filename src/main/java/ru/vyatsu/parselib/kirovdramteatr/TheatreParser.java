@@ -1,11 +1,11 @@
-package org.example.kirovdramteatr;
+package ru.vyatsu.parselib.kirovdramteatr;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.example.exceptions.ParsingRuntimeException;
-import org.example.models.Poster;
-import org.example.parser.ImageProcessor;
-import org.example.parser.Parser;
+import ru.vyatsu.parselib.exception.ParsingRuntimeException;
+import ru.vyatsu.parselib.model.Poster;
+import ru.vyatsu.parselib.parser.ImageProcessor;
+import ru.vyatsu.parselib.parser.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import java.util.Optional;

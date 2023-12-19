@@ -1,4 +1,4 @@
-package org.example.parser;
+package ru.vyatsu.parselib.parser;
 
 import org.jsoup.nodes.Document;
 

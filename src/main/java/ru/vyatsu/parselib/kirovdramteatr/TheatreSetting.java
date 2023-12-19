@@ -1,6 +1,6 @@
-package org.example.kirovdramteatr;
+package ru.vyatsu.parselib.kirovdramteatr;
 
-import org.example.parser.ParserSetting;
+import ru.vyatsu.parselib.parser.ParserSetting;
 
 public class TheatreSetting extends ParserSetting {
     public TheatreSetting(int start, int end){

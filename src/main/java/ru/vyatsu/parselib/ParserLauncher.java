@@ -1,12 +1,13 @@
-package org.example;
+package ru.vyatsu.parselib;
 
-import org.example.exceptions.ParsingRuntimeException;
+import ru.vyatsu.parselib.exception.ParsingRuntimeException;
 import lombok.val;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.example.parser.Completed;
-import org.example.parser.NewData;
-import org.example.parser.ParserWorker;
+import ru.vyatsu.parselib.parser.Completed;
+import ru.vyatsu.parselib.parser.NewData;
+import ru.vyatsu.parselib.parser.ParserWorker;
+
 import java.io.IOException;
 
 public class ParserLauncher {
@@ -59,6 +60,7 @@ public class ParserLauncher {
         this.endPage = endPage;
         launchSite();
     }
+
     private ParserWorker<?> createParser(Site site) {
         try {
             ParserWorker<?> parser = new ParserWorker<>(site.getParserClass()
@@ -73,6 +75,7 @@ public class ParserLauncher {
             throw new ParsingRuntimeException("Ошибка при создании парсера", exception);
         }
     }
+
     private void sleepForMilliseconds() {
         try {
             Thread.sleep(SLEEP_TIME);

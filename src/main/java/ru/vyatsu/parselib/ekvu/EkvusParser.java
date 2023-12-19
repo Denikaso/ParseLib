@@ -1,15 +1,16 @@
-package org.example.ekvus;
+package ru.vyatsu.parselib.ekvu;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.example.exceptions.ParsingRuntimeException;
-import org.example.models.Poster;
+import ru.vyatsu.parselib.exception.ParsingRuntimeException;
+import ru.vyatsu.parselib.model.Poster;
 import lombok.val;
-import org.example.parser.ImageProcessor;
+import ru.vyatsu.parselib.parser.ImageProcessor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.example.parser.Parser;
+import ru.vyatsu.parselib.parser.Parser;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;

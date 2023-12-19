@@ -1,4 +1,4 @@
-package org.example.parser;
+package ru.vyatsu.parselib.parser;
 
 import static java.lang.System.*;
 public class NewData<T> implements ParserWorker.OnNewDataHandler<T> {

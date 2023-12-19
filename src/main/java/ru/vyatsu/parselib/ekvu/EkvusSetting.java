@@ -1,6 +1,6 @@
-package org.example.ekvus;
+package ru.vyatsu.parselib.ekvu;
 
-import org.example.parser.ParserSetting;
+import ru.vyatsu.parselib.parser.ParserSetting;
 
 public class EkvusSetting extends ParserSetting {
     public EkvusSetting(int start, int end){

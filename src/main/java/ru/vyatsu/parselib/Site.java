@@ -1,14 +1,14 @@
-package org.example;
+package ru.vyatsu.parselib;
 
-import org.example.ekvus.EkvusParser;
-import org.example.ekvus.EkvusSetting;
-import org.example.habr.HabrParser;
-import org.example.habr.HabrSetting;
-import org.example.kirovdramteatr.TheatreParser;
-import org.example.kirovdramteatr.TheatreSetting;
+import ru.vyatsu.parselib.ekvu.EkvusParser;
+import ru.vyatsu.parselib.ekvu.EkvusSetting;
+import ru.vyatsu.parselib.habr.HabrParser;
+import ru.vyatsu.parselib.habr.HabrSetting;
+import ru.vyatsu.parselib.kirovdramteatr.TheatreParser;
+import ru.vyatsu.parselib.kirovdramteatr.TheatreSetting;
 import lombok.Getter;
-import org.example.parser.Parser;
-import org.example.parser.ParserSetting;
+import ru.vyatsu.parselib.parser.Parser;
+import ru.vyatsu.parselib.parser.ParserSetting;
 
 @Getter
 public enum Site {

@@ -1,4 +1,4 @@
-package org.example.exceptions;
+package ru.vyatsu.parselib.exception;
 
 public class ParsingRuntimeException extends RuntimeException{
     public ParsingRuntimeException(String message, Throwable cause) {

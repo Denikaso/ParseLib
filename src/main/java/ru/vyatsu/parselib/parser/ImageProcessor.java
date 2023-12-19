@@ -1,10 +1,10 @@
-package org.example.parser;
+package ru.vyatsu.parselib.parser;
 
 import lombok.Data;
 import lombok.val;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.example.exceptions.ParsingRuntimeException;
+import ru.vyatsu.parselib.exception.ParsingRuntimeException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -58,6 +58,20 @@ public class ImageProcessor {
         } catch (IOException exception) {
             logger.error("Ошибка при загрузке изображения", exception);
             throw new ParsingRuntimeException("Ошибка при загрузке изображения", exception);
+        }
+    }
+    public Path getImagePath(String imageName) {
+        Path imagePath = Paths.get(folderPath.toString(), imageName);
+        try {
+            if (Files.exists(imagePath)) {
+                return imagePath;
+            } else {
+                logger.warn("Изображение не найдено по пути: {}", imagePath);
+                return null;
+            }
+        } catch (Exception e) {
+            logger.error("Ошибка при получении пути изображения", e);
+            throw new ParsingRuntimeException("Ошибка при получении пути изображения", e);
         }
     }
 }
