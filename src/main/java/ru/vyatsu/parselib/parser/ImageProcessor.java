@@ -1,9 +1,8 @@
 package ru.vyatsu.parselib.parser;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import ru.vyatsu.parselib.exception.ParsingRuntimeException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -16,10 +15,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Data
+@Slf4j
 public class ImageProcessor {
     private static final String FOLDER_NAME = "images";
     private static final Path ROOT_PATH = Paths.get(".").toAbsolutePath();
-    private final Logger logger = LogManager.getLogger(ImageProcessor.class);
     private final Path folderPath;
 
     public ImageProcessor() {
@@ -30,12 +29,12 @@ public class ImageProcessor {
         try {
             if (Files.notExists(folderPath)) {
                 Files.createDirectories(folderPath);
-                logger.info("Создана директория для сохранения изображений в {}", folderPath);
+                log.info("Создана директория для сохранения изображений в {}", folderPath);
             } else {
-                logger.info("Директория для сохранения изображений уже существует в {}", folderPath);
+                log.info("Директория для сохранения изображений уже существует в {}", folderPath);
             }
         } catch (IOException exception) {
-            logger.error("Ошибка при создании директории", exception);
+            log.error("Ошибка при создании директории", exception);
             throw new ParsingRuntimeException("Ошибка при создании директории", exception);
         }
     }
@@ -47,7 +46,7 @@ public class ImageProcessor {
             val imagePath = Paths.get(folderPath.toString(), imageUrl.substring(imageUrl.lastIndexOf('/') + 1));
             downloadImage(url, imagePath);
         } catch (URISyntaxException | MalformedURLException exception) {
-            logger.error("Ошибка при обработке URL", exception);
+            log.error("Ошибка при обработке URL", exception);
             throw new ParsingRuntimeException("Ошибка при обработке URL", exception);
         }
     }
@@ -56,7 +55,7 @@ public class ImageProcessor {
         try (val in = url.openStream()) {
             Files.copy(in, imagePath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException exception) {
-            logger.error("Ошибка при загрузке изображения", exception);
+            log.error("Ошибка при загрузке изображения", exception);
             throw new ParsingRuntimeException("Ошибка при загрузке изображения", exception);
         }
     }

@@ -1,7 +1,6 @@
 package ru.vyatsu.parselib.parser.ekvu;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Element;
 import ru.vyatsu.parselib.exception.ParsingRuntimeException;
 import ru.vyatsu.parselib.model.Poster;
@@ -16,8 +15,8 @@ import static java.util.Optional.ofNullable;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toCollection;
 import static org.jsoup.Jsoup.connect;
+@Slf4j
 public class EkvuParser implements Parser<ArrayList<Poster>> {
-    private static final Logger logger = LogManager.getLogger(EkvuParser.class);
 
     @Override
     public ArrayList<Poster> parse(Document document, final ImageProcessor imageProcessor) {
@@ -45,7 +44,7 @@ public class EkvuParser implements Parser<ArrayList<Poster>> {
                                         .orElse(NO_DATA))
                                 .build();
                     } catch (Exception exception) {
-                        logger.error("Ошибка при обработке данных афиши", exception);
+                        log.error("Ошибка при обработке данных афиши", exception);
                         throw new ParsingRuntimeException("Ошибка при обработке данных афиши", exception);
                     }
                 })

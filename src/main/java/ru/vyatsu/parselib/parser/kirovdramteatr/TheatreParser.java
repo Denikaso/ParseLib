@@ -1,8 +1,7 @@
 package ru.vyatsu.parselib.parser.kirovdramteatr;
 
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import ru.vyatsu.parselib.exception.ParsingRuntimeException;
 import ru.vyatsu.parselib.model.Poster;
 import ru.vyatsu.parselib.parser.ImageProcessor;
@@ -13,9 +12,8 @@ import java.util.ArrayList;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toCollection;
 
+@Slf4j
 public class TheatreParser implements Parser<ArrayList<Poster>> {
-    private static final Logger logger = LogManager.getLogger(TheatreParser.class);
-
     @Override
     public ArrayList<Poster> parse(Document document, final ImageProcessor imageProcessor) {
         val postersElements = document.select("div.t_afisha");
@@ -57,7 +55,7 @@ public class TheatreParser implements Parser<ArrayList<Poster>> {
                                 .build();
 
                     } catch (Exception exception) {
-                        logger.error("Ошибка при обработке данных афиши", exception);
+                        log.error("Ошибка при обработке данных афиши", exception);
                         throw new ParsingRuntimeException("Ошибка при обработке данных афиши", exception);
                     }
                 })

@@ -1,8 +1,7 @@
 package ru.vyatsu.parselib.parser;
 
 import lombok.Data;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import ru.vyatsu.parselib.exception.ParsingRuntimeException;
 
@@ -12,14 +11,13 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 @Data
+@Slf4j
 public class ParserWorker<T> {
 
-    private static final Logger logger = LogManager.getLogger(ParserWorker.class);
-
-    Parser<T> parser;
-    ParserSetting parserSetting;
-    HtmlLoader loader;
-    boolean isActive;
+    private final Parser<T> parser;
+    private ParserSetting parserSetting;
+    private HtmlLoader loader;
+    private boolean isActive;
     protected List<OnNewDataHandler<T>> onNewDataList = new ArrayList<>();
     protected List<OnCompleted> onCompletedList = new ArrayList<>();
     public ParserWorker(Parser<T> parser) {
@@ -36,7 +34,7 @@ public class ParserWorker<T> {
                     try {
                         document = loader.getSourceByPageId(i);
                     } catch (IOException exception) {
-                        logger.error("Ошибка при загрузке данных с сайта", exception);
+                        log.error("Ошибка при загрузке данных с сайта", exception);
                         throw new ParsingRuntimeException("Ошибка при загрузке данных с сайта", exception);
                     }
                     T result = parser.parse(document, imageProcessor);

@@ -2,15 +2,14 @@ package ru.vyatsu.parselib;
 
 import ru.vyatsu.parselib.exception.ParsingRuntimeException;
 import lombok.val;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import ru.vyatsu.parselib.parser.Completed;
 import ru.vyatsu.parselib.parser.NewData;
 import ru.vyatsu.parselib.parser.ParserWorker;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ParserLauncher {
     private static final int SLEEP_TIME = 5000;
-    private final Logger logger = LogManager.getLogger(ParserLauncher.class);
     private final String siteUrl;
     private int startPage;
     private int endPage;
@@ -24,7 +23,7 @@ public class ParserLauncher {
             val site = Site.fromUrl(siteUrl);
 
             if (site == null) {
-                logger.error("Неизвестный сайт: {} ", siteUrl);
+                log.error("Неизвестный сайт: {} ", siteUrl);
                 return;
             }
 
@@ -37,7 +36,7 @@ public class ParserLauncher {
             sleepForMilliseconds();
 
             parser.abort();
-            logger.info("Парсинг сайта {} завершен", siteUrl);
+            log.info("Парсинг сайта {} завершен", siteUrl);
         } catch (ParsingRuntimeException exception) {
             handleParsingRuntimeException(exception);
         } catch (Exception exception) {
@@ -67,7 +66,7 @@ public class ParserLauncher {
                     .newInstance(startPage, endPage));
             return parser;
         } catch (Exception exception) {
-            logger.error("Ошибка при создании парсера", exception);
+            log.error("Ошибка при создании парсера", exception);
             throw new ParsingRuntimeException("Ошибка при создании парсера", exception);
         }
     }
@@ -76,18 +75,18 @@ public class ParserLauncher {
         try {
             Thread.sleep(SLEEP_TIME);
         } catch (InterruptedException exception) {
-            logger.error("Прерывание потока сна", exception);
+            log.error("Прерывание потока сна", exception);
             Thread.currentThread().interrupt();
         }
     }
 
     private void handleParsingRuntimeException(final ParsingRuntimeException exception) {
-        logger.error("Ошибка при запуске сайта: {} ", exception.getMessage());
+        log.error("Ошибка при запуске сайта: {} ", exception.getMessage());
         throw exception;
     }
 
     private void handleGeneralException(final Exception exception) {
-        logger.error("Необработанная ошибка при запуске сайта", exception);
+        log.error("Необработанная ошибка при запуске сайта", exception);
     }
 
 }

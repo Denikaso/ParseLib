@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class Article {
-    private String title;
-    private String text;
-    private String imageUrl;
+    private final String title;
+    private final String text;
+    private final String imageUrl;
 }
