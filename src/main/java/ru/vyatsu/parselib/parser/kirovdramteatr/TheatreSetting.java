@@ -1,4 +1,4 @@
-package ru.vyatsu.parselib.kirovdramteatr;
+package ru.vyatsu.parselib.parser.kirovdramteatr;
 
 import ru.vyatsu.parselib.parser.ParserSetting;
 

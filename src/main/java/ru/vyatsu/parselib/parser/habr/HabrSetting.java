@@ -1,4 +1,4 @@
-package ru.vyatsu.parselib.habr;
+package ru.vyatsu.parselib.parser.habr;
 
 import ru.vyatsu.parselib.parser.ParserSetting;
 

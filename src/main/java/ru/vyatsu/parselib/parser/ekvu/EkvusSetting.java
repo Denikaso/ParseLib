@@ -1,4 +1,4 @@
-package ru.vyatsu.parselib.ekvu;
+package ru.vyatsu.parselib.parser.ekvu;
 
 import ru.vyatsu.parselib.parser.ParserSetting;
 

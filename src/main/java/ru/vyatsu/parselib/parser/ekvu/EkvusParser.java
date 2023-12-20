@@ -1,4 +1,4 @@
-package ru.vyatsu.parselib.ekvu;
+package ru.vyatsu.parselib.parser.ekvu;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

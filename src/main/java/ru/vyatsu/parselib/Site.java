@@ -1,11 +1,11 @@
 package ru.vyatsu.parselib;
 
-import ru.vyatsu.parselib.ekvu.EkvusParser;
-import ru.vyatsu.parselib.ekvu.EkvusSetting;
-import ru.vyatsu.parselib.habr.HabrParser;
-import ru.vyatsu.parselib.habr.HabrSetting;
-import ru.vyatsu.parselib.kirovdramteatr.TheatreParser;
-import ru.vyatsu.parselib.kirovdramteatr.TheatreSetting;
+import ru.vyatsu.parselib.parser.ekvu.EkvusParser;
+import ru.vyatsu.parselib.parser.ekvu.EkvusSetting;
+import ru.vyatsu.parselib.parser.habr.HabrParser;
+import ru.vyatsu.parselib.parser.habr.HabrSetting;
+import ru.vyatsu.parselib.parser.kirovdramteatr.TheatreParser;
+import ru.vyatsu.parselib.parser.kirovdramteatr.TheatreSetting;
 import ru.vyatsu.parselib.parser.Parser;
 import ru.vyatsu.parselib.parser.ParserSetting;
 import lombok.Getter;
