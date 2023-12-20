@@ -20,7 +20,7 @@ public class EkvuParser implements Parser<ArrayList<Poster>> {
     private static final Logger logger = LogManager.getLogger(EkvuParser.class);
 
     @Override
-    public ArrayList<Poster> parse(Document document, ImageProcessor imageProcessor) {
+    public ArrayList<Poster> parse(Document document, final ImageProcessor imageProcessor) {
         val postersElements = document.getElementsByClass("page_box")
                 .get(0)
                 .getElementsByTag("table")
@@ -57,7 +57,7 @@ public class EkvuParser implements Parser<ArrayList<Poster>> {
                 .collect(toCollection(ArrayList::new));
     }
 
-    private static Document loadPerformance(Element poster) {
+    private static Document loadPerformance(final Element poster) {
         try {
             return connect("https://ekvus-kirov.ru" +
                     poster.getElementsByTag("a").get(1).attr("href")).get();
@@ -66,7 +66,7 @@ public class EkvuParser implements Parser<ArrayList<Poster>> {
         }
     }
 
-    private static String getImageUrl(Document doc) {
+    private static String getImageUrl(final Document doc) {
         val image = doc.getElementById("photo_osnova");
         return ofNullable(image != null ? image.absUrl("src") : doc.getElementsByClass("img_right").first())
                 .map(element -> {

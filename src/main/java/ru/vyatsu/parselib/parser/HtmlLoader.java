@@ -12,7 +12,7 @@ public class HtmlLoader {
         url = settings.getBaseUrl() + "/" + settings.getPrefix();
     }
 
-    public Document getSourceByPageId(int id) throws IOException {
+    public Document getSourceByPageId(final int id) throws IOException {
         return connect(url.replace("{CurrentId}", Integer.toString(id))).get();
     }
 }

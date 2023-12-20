@@ -11,7 +11,7 @@ import static java.util.stream.Collectors.toCollection;
 
 public class HabrParser implements Parser<ArrayList<Article>> {
     @Override
-    public final ArrayList<Article> parse(Document document, ImageProcessor imageProcessor) {
+    public final ArrayList<Article> parse(Document document, final ImageProcessor imageProcessor) {
         val articleElements = document.select("article");
 
         return articleElements.stream()

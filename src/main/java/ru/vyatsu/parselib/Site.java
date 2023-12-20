@@ -26,7 +26,7 @@ public enum Site {
         this.settingClass = settingClass;
     }
 
-    public static Site fromUrl(String url) {
+    public static Site fromUrl(final String url) {
         for (Site site : values()) {
             if (site.getUrl().equals(url)) {
                 return site;

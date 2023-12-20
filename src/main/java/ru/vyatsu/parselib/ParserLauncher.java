@@ -51,13 +51,13 @@ public class ParserLauncher {
         launchSite();
     }
 
-    public final void launchSiteWithPagination (int startPage, int endPage){
+    public final void launchSiteWithPagination (final int startPage, final int endPage){
         this.startPage = startPage;
         this.endPage = endPage;
         launchSite();
     }
 
-    private ParserWorker<?> createParser(Site site) {
+    private ParserWorker<?> createParser(final Site site) {
         try {
             ParserWorker<?> parser = new ParserWorker<>(site.getParserClass()
                     .getDeclaredConstructor()
@@ -81,12 +81,12 @@ public class ParserLauncher {
         }
     }
 
-    private void handleParsingRuntimeException(ParsingRuntimeException exception) {
+    private void handleParsingRuntimeException(final ParsingRuntimeException exception) {
         logger.error("Ошибка при запуске сайта: {} ", exception.getMessage());
         throw exception;
     }
 
-    private void handleGeneralException(Exception exception) {
+    private void handleGeneralException(final Exception exception) {
         logger.error("Необработанная ошибка при запуске сайта", exception);
     }
 

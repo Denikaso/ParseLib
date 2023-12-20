@@ -52,26 +52,12 @@ public class ImageProcessor {
         }
     }
 
-    private void downloadImage(URL url, Path imagePath) {
+    private void downloadImage(final URL url, final Path imagePath) {
         try (val in = url.openStream()) {
             Files.copy(in, imagePath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException exception) {
             logger.error("Ошибка при загрузке изображения", exception);
             throw new ParsingRuntimeException("Ошибка при загрузке изображения", exception);
-        }
-    }
-    public Path getImagePath(String imageName) {
-        Path imagePath = Paths.get(folderPath.toString(), imageName);
-        try {
-            if (Files.exists(imagePath)) {
-                return imagePath;
-            } else {
-                logger.warn("Изображение не найдено по пути: {}", imagePath);
-                return null;
-            }
-        } catch (Exception e) {
-            logger.error("Ошибка при получении пути изображения", e);
-            throw new ParsingRuntimeException("Ошибка при получении пути изображения", e);
         }
     }
 }

@@ -15,10 +15,9 @@ import static java.util.stream.Collectors.toCollection;
 
 public class TheatreParser implements Parser<ArrayList<Poster>> {
     private static final Logger logger = LogManager.getLogger(TheatreParser.class);
-    private static final String NO_DATA = "";
 
     @Override
-    public ArrayList<Poster> parse(Document document, ImageProcessor imageProcessor) {
+    public ArrayList<Poster> parse(Document document, final ImageProcessor imageProcessor) {
         val postersElements = document.select("div.t_afisha");
 
         return postersElements.stream()
@@ -57,9 +56,9 @@ public class TheatreParser implements Parser<ArrayList<Poster>> {
                                 .ageLimit(ageLimit)
                                 .build();
 
-                    } catch (Exception e) {
-                        logger.error("Ошибка при обработке данных афиши", e);
-                        throw new ParsingRuntimeException("Ошибка при обработке данных афиши", e);
+                    } catch (Exception exception) {
+                        logger.error("Ошибка при обработке данных афиши", exception);
+                        throw new ParsingRuntimeException("Ошибка при обработке данных афиши", exception);
                     }
                 })
                 .peek(poster -> {
