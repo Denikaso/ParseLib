@@ -8,12 +8,22 @@ import ru.vyatsu.parselib.parser.ImageProcessor;
 import ru.vyatsu.parselib.parser.Parser;
 import org.jsoup.nodes.Document;
 import java.util.ArrayList;
-
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toCollection;
 
+/**
+ * Класс TheatreParser реализует парсинг афиши театра "<a href="https://kirovdramteatr.ru/afisha">...</a>".
+ */
 @Slf4j
 public class TheatreParser implements Parser<ArrayList<Poster>> {
+    /**
+     * Метод parse выполняет парсинг афиши театра.
+     *
+     * @param document        HTML-документ для парсинга.
+     * @param imageProcessor  Обработчик изображений для скачивания.
+     * @return                Список постеров афиши театра.
+     * @throws ParsingRuntimeException В случае ошибки при обработке данных афиши.
+     */
     @Override
     public ArrayList<Poster> parse(Document document, final ImageProcessor imageProcessor) {
         val postersElements = document.select("div.t_afisha");

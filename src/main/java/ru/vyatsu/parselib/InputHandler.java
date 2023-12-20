@@ -7,9 +7,18 @@ import java.util.HashMap;
 import java.util.Map;
 import static java.lang.System.*;
 
+/**
+ * Обработчик входных аргументов для запуска парсера.
+ * Принимает аргументы командной строки и запускает соответствующие действия.
+ */
 @NoArgsConstructor
 @Slf4j
 public class InputHandler {
+    /**
+     * Обрабатывает входные аргументы и запускает соответствующие действия.
+     *
+     * @param args Массив строк, содержащий входные аргументы.
+     */
     public void handleArguments(String[] args) {
         if (args.length == 0) {
             err.println("Ошибка: Не указаны аргументы. Используйте: java -jar файл.jar ссылка_на_сайт [начальная_страница конечная_страница]");

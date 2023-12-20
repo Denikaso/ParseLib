@@ -1,14 +1,32 @@
-    package ru.vyatsu.parselib.model;
+package ru.vyatsu.parselib.model;
 
-    import lombok.Builder;
-    import lombok.Data;
+import lombok.Builder;
+import lombok.Data;
 
-    @Data
-    @Builder
-    public class Poster {
-        private final String title;
-        private final String imageUrl;
-        private final String date;
-        private final String duration;
-        private final String ageLimit;
-    }
+/**
+ * Модель, представляющая афишу спектакля.
+ */
+@Data
+@Builder
+public class Poster {
+    /**
+     * Название спектакля.
+     */
+    private final String title;
+    /**
+     * URL изображения афиши.
+     */
+    private final String imageUrl;
+    /**
+     * Дата проведения спектакля.
+     */
+    private final String date;
+    /**
+     * Продолжительность спектакля.
+     */
+    private final String duration;
+    /**
+     * Возрастное ограничение спектакля.
+     */
+    private final String ageLimit;
+}

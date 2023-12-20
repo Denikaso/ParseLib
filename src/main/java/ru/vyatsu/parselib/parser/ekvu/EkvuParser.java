@@ -10,14 +10,24 @@ import org.jsoup.nodes.Document;
 import ru.vyatsu.parselib.parser.Parser;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import static java.util.Optional.ofNullable;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toCollection;
 import static org.jsoup.Jsoup.connect;
+
+/**
+ * Класс EkvuParser реализует парсинг афиши для сайта "<a href="https://ekvus-kirov.ru/afisha">...</a>".
+ */
 @Slf4j
 public class EkvuParser implements Parser<ArrayList<Poster>> {
-
+    /**
+     * Парсит документ с афишей сайта "<a href="https://ekvus-kirov.ru/afisha">...</a>".
+     *
+     * @param document        Документ с афишей.
+     * @param imageProcessor Обработчик изображений.
+     * @return Список объектов Poster, представляющих информацию о предстоящих мероприятиях.
+     * @throws ParsingRuntimeException В случае ошибки при парсинге.
+     */
     @Override
     public ArrayList<Poster> parse(Document document, final ImageProcessor imageProcessor) {
         val postersElements = document.getElementsByClass("page_box")
@@ -56,6 +66,13 @@ public class EkvuParser implements Parser<ArrayList<Poster>> {
                 .collect(toCollection(ArrayList::new));
     }
 
+    /**
+     * Загружает документ с информацией о спектакле.
+     *
+     * @param poster Элемент, представляющий информацию о спектакле.
+     * @return Документ с информацией о спектакле.
+     * @throws ParsingRuntimeException В случае ошибки при загрузке.
+     */
     private static Document loadPerformance(final Element poster) {
         try {
             return connect("https://ekvus-kirov.ru" +
@@ -65,6 +82,12 @@ public class EkvuParser implements Parser<ArrayList<Poster>> {
         }
     }
 
+    /**
+     * Получает URL изображения из документа.
+     *
+     * @param doc Документ с информацией о спектакле.
+     * @return URL изображения.
+     */
     private static String getImageUrl(final Document doc) {
         val image = doc.getElementById("photo_osnova");
         return ofNullable(image != null ? image.absUrl("src") : doc.getElementsByClass("img_right").first())
@@ -77,5 +100,4 @@ public class EkvuParser implements Parser<ArrayList<Poster>> {
                 })
                 .orElse(NO_DATA);
     }
-
 }

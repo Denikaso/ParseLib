@@ -6,10 +6,19 @@ import ru.vyatsu.parselib.parser.Parser;
 import org.jsoup.nodes.Document;
 import java.util.ArrayList;
 import lombok.val;
-
 import static java.util.stream.Collectors.toCollection;
 
+/**
+ * Класс HabrParser реализует парсинг статей с сайта "<a href="https://habr.com/ru/all">...</a>".
+ */
 public class HabrParser implements Parser<ArrayList<Article>> {
+    /**
+     * Парсит документ и возвращает список статей.
+     *
+     * @param document        HTML-документ для парсинга.
+     * @param imageProcessor  Обработчик изображений.
+     * @return                Список статей.
+     */
     @Override
     public final ArrayList<Article> parse(Document document, final ImageProcessor imageProcessor) {
         val articleElements = document.select("article");

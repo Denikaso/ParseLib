@@ -7,6 +7,9 @@ import ru.vyatsu.parselib.parser.NewData;
 import ru.vyatsu.parselib.parser.ParserWorker;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Класс для запуска парсера сайтов.
+ */
 @Slf4j
 public class ParserLauncher {
     private static final int SLEEP_TIME = 5000;
@@ -14,10 +17,18 @@ public class ParserLauncher {
     private int startPage;
     private int endPage;
 
+    /**
+     * Конструктор класса.
+     *
+     * @param siteUrl URL сайта для парсинга.
+     */
     public ParserLauncher(String siteUrl) {
         this.siteUrl = siteUrl;
     }
 
+    /**
+     * Запускает парсинг сайта без пагинации.
+     */
     public final void launchSite() {
         try {
             val site = Site.fromUrl(siteUrl);
@@ -28,7 +39,6 @@ public class ParserLauncher {
             }
 
             ParserWorker<?> parser = createParser(site);
-
             parser.getOnCompletedList().add(new Completed());
             parser.getOnNewDataList().add(new NewData<>());
             parser.start();
@@ -44,18 +54,34 @@ public class ParserLauncher {
         }
     }
 
+    /**
+     * Запускает парсинг сайта без пагинации с использованием значений по умолчанию.
+     */
     public final void launchSiteWithoutPagination() {
         startPage = 1;
         endPage = 1;
         launchSite();
     }
 
+    /**
+     * Запускает парсинг сайта с пагинацией.
+     *
+     * @param startPage Начальная страница для парсинга.
+     * @param endPage   Конечная страница для парсинга.
+     */
     public final void launchSiteWithPagination (final int startPage, final int endPage){
         this.startPage = startPage;
         this.endPage = endPage;
         launchSite();
     }
 
+    /**
+     * Создает экземпляр парсера для указанного сайта.
+     *
+     * @param site Сайт, для которого необходимо создать парсер.
+     * @return Экземпляр парсера.
+     * @throws ParsingRuntimeException Если произошла ошибка при создании парсера.
+     */
     private ParserWorker<?> createParser(final Site site) {
         try {
             ParserWorker<?> parser = new ParserWorker<>(site.getParserClass()
@@ -71,6 +97,10 @@ public class ParserLauncher {
         }
     }
 
+    /**
+     * Приостанавливает выполнение текущего потока на указанное количество миллисекунд.
+     * Если поток прерывается во время сна, устанавливается флаг прерывания.
+     */
     private void sleepForMilliseconds() {
         try {
             Thread.sleep(SLEEP_TIME);
@@ -80,13 +110,22 @@ public class ParserLauncher {
         }
     }
 
+    /**
+     * Обработка исключения {@link ParsingRuntimeException}.
+     *
+     * @param exception Исключение {@link ParsingRuntimeException}.
+     */
     private void handleParsingRuntimeException(final ParsingRuntimeException exception) {
         log.error("Ошибка при запуске сайта: {} ", exception.getMessage());
         throw exception;
     }
 
+    /**
+     * Обработка общего исключения.
+     *
+     * @param exception Общее исключение.
+     */
     private void handleGeneralException(final Exception exception) {
         log.error("Необработанная ошибка при запуске сайта", exception);
     }
-
 }

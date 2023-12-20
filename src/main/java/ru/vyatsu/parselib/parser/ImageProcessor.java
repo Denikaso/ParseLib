@@ -14,6 +14,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+/**
+ * Класс ImageProcessor обеспечивает обработку изображений при парсинге данных.
+ */
 @Data
 @Slf4j
 public class ImageProcessor {
@@ -21,10 +24,16 @@ public class ImageProcessor {
     private static final Path ROOT_PATH = Paths.get(".").toAbsolutePath();
     private final Path folderPath;
 
+    /**
+     * Конструктор создает экземпляр ImageProcessor и определяет папку для сохранения изображений.
+     */
     public ImageProcessor() {
         this.folderPath = ROOT_PATH.resolve(FOLDER_NAME);
     }
 
+    /**
+     * Метод createImageDirectory создает директорию для сохранения изображений, если она не существует.
+     */
     public void createImageDirectory() {
         try {
             if (Files.notExists(folderPath)) {
@@ -39,6 +48,11 @@ public class ImageProcessor {
         }
     }
 
+    /**
+     * Метод copyImage копирует изображение по указанному URL в директорию для сохранения изображений.
+     *
+     * @param imageUrl URL изображения для загрузки и сохранения.
+     */
     public void copyImage(String imageUrl) {
         try {
             URL url = new URI(imageUrl).toURL();
@@ -51,6 +65,13 @@ public class ImageProcessor {
         }
     }
 
+    /**
+     * Метод downloadImage загружает изображение по указанному URL и сохраняет его в указанный путь.
+     *
+     * @param url       URL изображения для загрузки.
+     * @param imagePath Путь, по которому изображение будет сохранено.
+     * @throws ParsingRuntimeException Если происходит ошибка при загрузке или сохранении изображения.
+     */
     private void downloadImage(final URL url, final Path imagePath) {
         try (val in = url.openStream()) {
             Files.copy(in, imagePath, StandardCopyOption.REPLACE_EXISTING);
