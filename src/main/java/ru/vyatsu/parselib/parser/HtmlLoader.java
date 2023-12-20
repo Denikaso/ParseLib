@@ -1,8 +1,9 @@
 package ru.vyatsu.parselib.parser;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import java.io.IOException;
+
+import static org.jsoup.Jsoup.connect;
 
 public class HtmlLoader {
     private final String url;
@@ -12,6 +13,6 @@ public class HtmlLoader {
     }
 
     public Document getSourceByPageId(int id) throws IOException {
-        return Jsoup.connect(url.replace("{CurrentId}", Integer.toString(id))).get();
+        return connect(url.replace("{CurrentId}", Integer.toString(id))).get();
     }
 }

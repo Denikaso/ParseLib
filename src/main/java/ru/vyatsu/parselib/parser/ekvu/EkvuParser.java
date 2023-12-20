@@ -7,16 +7,17 @@ import ru.vyatsu.parselib.exception.ParsingRuntimeException;
 import ru.vyatsu.parselib.model.Poster;
 import lombok.val;
 import ru.vyatsu.parselib.parser.ImageProcessor;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import java.util.stream.Collectors;
 import ru.vyatsu.parselib.parser.Parser;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Optional;
 
-public class EkvusParser implements Parser<ArrayList<Poster>> {
-    private static final Logger logger = LogManager.getLogger(EkvusParser.class);
+import static java.util.Optional.ofNullable;
+import static java.util.Optional.of;
+import static java.util.stream.Collectors.toCollection;
+import static org.jsoup.Jsoup.connect;
+public class EkvuParser implements Parser<ArrayList<Poster>> {
+    private static final Logger logger = LogManager.getLogger(EkvuParser.class);
 
     @Override
     public ArrayList<Poster> parse(Document document, ImageProcessor imageProcessor) {
@@ -31,14 +32,14 @@ public class EkvusParser implements Parser<ArrayList<Poster>> {
                 .map(poster -> {
                     try {
                         return Poster.builder()
-                                .title(Optional.ofNullable(poster.select("td:eq(1)").select("a").first())
+                                .title(ofNullable(poster.select("td:eq(1)").select("a").first())
                                         .map(Element::text)
                                         .orElse(NO_DATA))
                                 .imageUrl(getImageUrl(loadPerformance(poster)))
-                                .ageLimit(Optional.of(poster.select("[class=\"al_s\"], [class=\"al\"]").text())
+                                .ageLimit(of(poster.select("[class=\"al_s\"], [class=\"al\"]").text())
                                         .orElse(NO_DATA))
                                 .date(poster.getElementsByTag("font").text())
-                                .duration(Optional.of(document.getElementsMatchingText("Продолжительность спектакля:"))
+                                .duration(of(document.getElementsMatchingText("Продолжительность спектакля:"))
                                         .filter(durations -> !durations.isEmpty())
                                         .map(durations -> durations.get(8).text().substring("Продолжительность спектакля:".length()))
                                         .orElse(NO_DATA))
@@ -53,12 +54,12 @@ public class EkvusParser implements Parser<ArrayList<Poster>> {
                         imageProcessor.copyImage(poster.getImageUrl());
                     }
                 })
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(toCollection(ArrayList::new));
     }
 
     private static Document loadPerformance(Element poster) {
         try {
-            return Jsoup.connect("https://ekvus-kirov.ru" +
+            return connect("https://ekvus-kirov.ru" +
                     poster.getElementsByTag("a").get(1).attr("href")).get();
         } catch (IOException exception) {
             throw new ParsingRuntimeException("Ошибка при загрузке информации о спектакле", exception);
@@ -67,7 +68,7 @@ public class EkvusParser implements Parser<ArrayList<Poster>> {
 
     private static String getImageUrl(Document doc) {
         val image = doc.getElementById("photo_osnova");
-        return Optional.ofNullable(image != null ? image.absUrl("src") : doc.getElementsByClass("img_right").first())
+        return ofNullable(image != null ? image.absUrl("src") : doc.getElementsByClass("img_right").first())
                 .map(element -> {
                     if (element instanceof Element imageElement) {
                         return imageElement.absUrl("src");

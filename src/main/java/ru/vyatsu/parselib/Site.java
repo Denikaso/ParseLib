@@ -1,7 +1,7 @@
 package ru.vyatsu.parselib;
 
-import ru.vyatsu.parselib.parser.ekvu.EkvusParser;
-import ru.vyatsu.parselib.parser.ekvu.EkvusSetting;
+import ru.vyatsu.parselib.parser.ekvu.EkvuParser;
+import ru.vyatsu.parselib.parser.ekvu.EkvuSetting;
 import ru.vyatsu.parselib.parser.habr.HabrParser;
 import ru.vyatsu.parselib.parser.habr.HabrSetting;
 import ru.vyatsu.parselib.parser.kirovdramteatr.TheatreParser;
@@ -14,7 +14,7 @@ import lombok.Getter;
 public enum Site {
     HABR("https://habr.com/ru/all", HabrParser.class, HabrSetting.class),
     THEATRE("https://kirovdramteatr.ru/afisha", TheatreParser.class, TheatreSetting.class),
-    EKVUS("https://ekvus-kirov.ru/afisha", EkvusParser.class, EkvusSetting.class);
+    EKVU("https://ekvus-kirov.ru/afisha", EkvuParser.class, EkvuSetting.class);
 
     private final String url;
     private final Class<? extends Parser<?>> parserClass;

@@ -9,16 +9,16 @@ import ru.vyatsu.parselib.parser.ImageProcessor;
 import ru.vyatsu.parselib.parser.Parser;
 import org.jsoup.nodes.Document;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toCollection;
 
 public class TheatreParser implements Parser<ArrayList<Poster>> {
     private static final Logger logger = LogManager.getLogger(TheatreParser.class);
     private static final String NO_DATA = "";
 
     @Override
-    public final ArrayList<Poster> parse(Document document, ImageProcessor imageProcessor) {
+    public ArrayList<Poster> parse(Document document, ImageProcessor imageProcessor) {
         val postersElements = document.select("div.t_afisha");
 
         return postersElements.stream()
@@ -67,6 +67,6 @@ public class TheatreParser implements Parser<ArrayList<Poster>> {
                         imageProcessor.copyImage(poster.getImageUrl());
                     }
                 })
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(toCollection(ArrayList::new));
     }
 }

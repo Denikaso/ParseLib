@@ -5,8 +5,9 @@ import ru.vyatsu.parselib.parser.ImageProcessor;
 import ru.vyatsu.parselib.parser.Parser;
 import org.jsoup.nodes.Document;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 import lombok.val;
+
+import static java.util.stream.Collectors.toCollection;
 
 public class HabrParser implements Parser<ArrayList<Article>> {
     @Override
@@ -25,6 +26,6 @@ public class HabrParser implements Parser<ArrayList<Article>> {
                         imageProcessor.copyImage(article.getImageUrl());
                     }
                 })
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(toCollection(ArrayList::new));
     }
 }
